@@ -1,0 +1,36 @@
+# Node.js dependencies
+/node_modules/
+
+# Log files
+*.log
+
+# Environment variables
+.env
+
+# Build output
+/dist
+/build
+
+# OS-specific files
+.DS_Store
+
+# IDE and editor settings
+.vscode/
+.idea/
+*.sublime-workspace
+
+# Package lock files (optional, based on your project needs)
+package-lock.json
+
+# Test coverage reports
+/coverage
+
+# Temporary files
+.cache/
+/tmp/
+
+# Yarn lock file (optional, based on your project needs)
+yarn.lock
+
+# npm debug files
+npm-debug.log*
