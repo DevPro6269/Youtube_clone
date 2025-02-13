@@ -10,5 +10,5 @@ router.route("/login").post(WrapAsync(login))
 // protected routes
 router.route("/logout").post(isAuthenticate,WrapAsync(logout))
 router.route("/profile").get(isAuthenticate,WrapAsync(profile))
-.post(isAuthenticate,WrapAsync(updateProfile))
+.put(isAuthenticate,WrapAsync(updateProfile))
 export default router;

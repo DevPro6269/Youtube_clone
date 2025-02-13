@@ -3,6 +3,7 @@ import cookieParser from "cookie-parser";
 import ApiError from "./utils/apiError.js";
 import userRoute from "./routes/user.route.js"
 import { verifyOtp } from "./controller/user.controller.js";
+import channelRoute from "./routes/channel.route.js"
 const app = express();
 
 // Middleware to parse URL-encoded data and JSON data
@@ -14,9 +15,9 @@ app.use(cookieParser());
 
 // user route
 app.use("/api/user",userRoute)
+app.use("/api/channel",channelRoute)
+
 app.post("/api/verify",verifyOtp)
-
-
 // Error handling middleware
 app.use((err, req, res, next) => {
     // If error contains a status code, use it, otherwise default to 500

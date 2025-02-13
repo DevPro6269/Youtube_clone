@@ -13,7 +13,6 @@ const channelSchema = new Schema({
    },
     description:{
         type:String,
-        required:true
     },
     videos:[
         {
@@ -30,3 +29,4 @@ const channelSchema = new Schema({
 },{timestamps:true})
 
 const Channel = mongoose.model("Channel",channelSchema)
+export default Channel;

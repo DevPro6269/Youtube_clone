@@ -1,6 +1,13 @@
 import mongoose, { Schema } from "mongoose";
 
 const videoSchema = new Schema({
+
+   publishedBy:{
+     type:Schema.Types.ObjectId,
+     ref:"Channel",
+     required:true
+   },
+
     title:{
         type:String,
         required:true,
