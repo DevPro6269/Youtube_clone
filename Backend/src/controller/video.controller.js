@@ -9,7 +9,7 @@ import ApiResponse from "../utils/apiResponse.js";
 
 
 
-export async function createVideo(req, res) {
+export async function publishVideo(req, res) {
   const { user } = req;
   if (!user)
     return res
@@ -65,7 +65,7 @@ export async function createVideo(req, res) {
     .json(new ApiResponse(200, video, "video uploaded successfully"));
 }
 
-export async function getVideoById(req, res) {
+export async function viewVideo(req, res) {
   const { videoId } = req.params;
   if (!videoId)
     return res.status(400).json(new ApiError(400, "please provide a video id"));
@@ -92,14 +92,20 @@ export async function getVideoById(req, res) {
     },
   ]);
 
-  video[0].views++;
+  
 
   if (video && video.length === 0)
     return res.status(400).json(new ApiError(400, "video does not exist"));
 
-  return res
+   res
     .status(200)
     .json(new ApiResponse(200, video, "video retrived successfully"));
+   
+    video[0].views+=1;
+
+   await video.sava()
+   return;
+
 }
 
 export async function getAllVideos(req, res) {
