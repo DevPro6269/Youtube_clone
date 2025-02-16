@@ -11,6 +11,10 @@ const channelSchema = new Schema({
     required:true,
     unique:true
    },
+   profile:{
+    type:String,
+    required:true
+   },
     description:{
         type:String,
     },

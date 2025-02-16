@@ -6,9 +6,17 @@ import channelRoute from "./routes/channel.route.js"
 import commentRoute from "./routes/comment.route.js"
 import videoRoute from "./routes/video.route.js"
 import likeVideoRoute from "./routes/like.route.js"
+import cors from "cors"
 const app = express();
 
-// Middleware to parse URL-encoded data and JSON data
+const corsOptions = {
+    origin: 'http://localhost:5173', // Allow your frontend URL (replace with your frontend URL)
+    methods: ['GET', 'POST', 'PUT', 'DELETE'], // Specify allowed methods
+    allowedHeaders: ['Content-Type', 'Authorization'], // Allowed headers
+    credentials: true, // Enable cookies and other credentials
+  };
+
+app.use(cors(corsOptions))
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
@@ -16,6 +24,10 @@ app.use(express.json());
 app.use(cookieParser());
 
 // user route
+app.use("/",(req,res,next)=>{
+    console.log("working")
+    next()
+})
 app.use("/api/user",userRoute)
 app.use("/api/channel",channelRoute)
 app.use("/api/comment",commentRoute)

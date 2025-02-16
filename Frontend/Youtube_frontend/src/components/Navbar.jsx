@@ -1,6 +1,11 @@
-import React from "react";
+import React,{useState} from "react";
+import Profile from "./Profile";
+import { Link } from "react-router-dom";
 
 const Navbar = () => {
+
+  const[profile,setProfile]=useState(false)
+
   return (
     <>
       <nav className="bg-black gap-36 items-center justify-between flex p-3">
@@ -44,7 +49,7 @@ const Navbar = () => {
         </div>
 
         {/* div for sign in options */}
-        <div className="flex gap-2 hidden items-center">
+        <div className="flex gap-2  items-center">
           <div>
             <i
               class="fa-solid fa-ellipsis-vertical"
@@ -52,18 +57,21 @@ const Navbar = () => {
             ></i>
           </div>
 
-          <div className="flex p-2  outline h-10 gap-3 outline-white text-white rounded-full">
-            <div className="outline-white p-1 outline rounded-full flex justify-center items-center">
-              <i class="fa-regular fa-user" style={{ color: " #ffffff" }}></i>{" "}
+         <Link to={"/sign-up"}>
+         <div className="flex p-2  outline h-10 gap-3 outline-blue-400 text-white rounded-full">
+            <div className="outline-blue-600 p-1 outline rounded-full flex justify-center items-center">
+              <i class="fa-regular text-blue-500 fa-user"></i>{" "}
             </div>
-          <span className="text-white">Sign in</span>
+        
+          <span className="text-blue-500">Sign in</span>
           </div>
+         </Link>
         </div>
 
 
         {/* div for sign in user  */}
 
-        <div className="flex gap-8 mr-2">
+        <div className="flex hidden gap-8 mr-2">
              <div className="flex justify-center items-center">
              <i class="fa-solid fa-xl fa-video" style={{color: "#f5f7f9"}}>
              </i>
@@ -72,8 +80,9 @@ const Navbar = () => {
              <div className="flex justify-center items-center">
              <i class="fa-regular fa-xl fa-bell" style={{color: "#ffffff"}}></i>
              </div>
-             <div className="h-8 w-8 rounded-full">
+             <div onClick={()=>{setProfile((prev)=>!prev)}} className="h-8 w-8 relative rounded-full">
             <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRuCgYhXnM81IAW-mTKqqjn-jmVIncQAQZq5w&s" className="h-full object-cover rounded-full w-full" alt="" />
+          {profile?<Profile/>:""}
              </div>
         </div>
       </nav>
