@@ -1,9 +1,11 @@
 import React,{useState} from "react";
 import Profile from "./Profile";
 import { Link } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 const Navbar = () => {
-
+  const userLoggedIn = useSelector((state)=>state.user.isLoggedIn);
+  const user = useSelector((state)=>state.user.user)
   const[profile,setProfile]=useState(false)
 
   return (
@@ -48,8 +50,8 @@ const Navbar = () => {
           </div>
         </div>
 
-        {/* div for sign in options */}
-        <div className="flex gap-2  items-center">
+        {/* div for sign out users  */}
+        <div className={`flex gap-2 ${userLoggedIn?"hidden":"flex"}  items-center`}>
           <div>
             <i
               class="fa-solid fa-ellipsis-vertical"
@@ -66,12 +68,14 @@ const Navbar = () => {
           <span className="text-blue-500">Sign in</span>
           </div>
          </Link>
+
+
         </div>
 
 
         {/* div for sign in user  */}
 
-        <div className="flex hidden gap-8 mr-2">
+        <div className={`flex  ${userLoggedIn?"flex":"hidden"} gap-8 mr-2`}>
              <div className="flex justify-center items-center">
              <i class="fa-solid fa-xl fa-video" style={{color: "#f5f7f9"}}>
              </i>

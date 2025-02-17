@@ -1,7 +1,10 @@
-import React from "react";
+import React, { use } from "react";
 import { Link } from "react-router-dom";
 import Options from "./Sidebar/Options";
+import { useSelector } from "react-redux";
 const Sidebar = () => {
+  const userLoggedIn = useSelector((state)=>state.user.isLoggedIn);
+
   return (
     <div className="bg-black h-screen w-[18%] overflow-auto text-white  px-4 p-2">
       <div className="w-fit hidden">
@@ -63,7 +66,7 @@ const Sidebar = () => {
       <div className="bg-gray-600 mt-2 w-full h-[1px]"></div>
 
       {/* ////////////////  for sign out users */}
-      <div className="flex mt-2 flex-col">
+      <div className={`flex mt-2 flex-col ${userLoggedIn?"hidden":"flex"}`}>
         <Link to={"/sign-up"}>
           <div className=" w-48 text-blue-500 rounded-2xl flex flex-col gap-2 px-4 p-2">
             <div className="text-white text-[13px]">

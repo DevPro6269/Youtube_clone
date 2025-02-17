@@ -8,7 +8,7 @@ function useApiRequest(url,triggerRequest, method = "GET", reqData = null, withC
 
   useEffect(() => {
     console.log(triggerRequest);
-    
+    setError(null)
     if (!triggerRequest) return;
 
     async function fetchData() {

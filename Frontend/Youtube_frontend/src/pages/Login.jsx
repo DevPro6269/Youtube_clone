@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from 'react'
 import useApiRequest from "../Hooks/useApiRequest.js"
 import { useNavigate } from 'react-router-dom'
+import { useDispatch } from 'react-redux'
+import { setLoggedIn } from '../Store/userSlice.js'
 
 const Login = () => {
-
+   const dispatch = useDispatch()
     const navigate = useNavigate()
 
  const url = "http://localhost:8000/api/user/login"
@@ -17,7 +19,8 @@ const Login = () => {
 const {data,loading,error}=useApiRequest(url,triggerRequest,"POST",formData)
 
  useEffect(()=>{
-    if(data.statusCode==200){
+    if(data.statusCode==200){        
+        dispatch(setLoggedIn(data.data))
         navigate("/")
     }
  },[data])

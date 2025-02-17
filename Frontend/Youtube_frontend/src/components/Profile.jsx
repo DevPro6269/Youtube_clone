@@ -1,6 +1,15 @@
 import React from 'react'
+import { useSelector } from 'react-redux'
+import { Link } from 'react-router-dom';
 
 const Profile = () => {
+
+
+    const userLoggedIn = useSelector((state)=>state.user.isLoggedIn);
+
+const user = useSelector((state)=>state.user.user);
+  console.log(user);
+  
   return (
    <div className='flex absolute right-[2px]   text-white rounded-xl top-10 bg-zinc-800 flex-col' >
     
@@ -12,9 +21,9 @@ const Profile = () => {
 </div>
 
 <div className='flex flex-col '>
-    <h1>Dev rathore</h1>
+    <h1>{user && user.firstName +" "+ user.lastName }</h1>
     <h2>@devabhai</h2>
-    <p className='text-blue-500 mt-2'>view your channel</p>
+   <Link to={"/channel"} > <p className='text-blue-500 mt-2'>view your channel</p></Link>
 </div>
         
     </div>

@@ -1,18 +1,19 @@
 import React from 'react'
 import Home from './pages/Home'
 import View from './pages/View'
-import Navbar from './components/Navbar'
-import Sidebar from './components/Sidebar'
 import ChannelDetails from './pages/ChannelDetails'
-import { BrowserRouter, createBrowserRouter, Outlet, RouterProvider } from 'react-router-dom'
+import {createBrowserRouter, RouterProvider } from 'react-router-dom'
 import Signup from './pages/Signup'
 import Login from './pages/Login'
 import { CreateChannel } from './pages/CreateChannel'
 import Layout from './Layout/Layout'
-
-
+import { useSelector } from 'react-redux'
+import ProtectedRoute from "./Hooks/protectedRoute.jsx"
+import OtpVerification from './components/VerifyOtp.jsx'
 
 const Dashboard = () => {
+
+const userLoggedIn = useSelector((state)=>state.user.isLoggedIn)
   const Router = createBrowserRouter([{
     path:"/",
     element:<Layout/>,
@@ -33,6 +34,10 @@ const Dashboard = () => {
         path:"/channel",
         element:<ChannelDetails/>
       }
+      ,{
+        path:"/verify",
+        element:<OtpVerification/>
+      }
     ]
   },
   {
@@ -41,7 +46,9 @@ const Dashboard = () => {
   },
   {
     path:"/youtube/channel/new",
-    element:<CreateChannel/>
+    element:<ProtectedRoute>
+      <CreateChannel/>
+    </ProtectedRoute>
   }
   ])
 
