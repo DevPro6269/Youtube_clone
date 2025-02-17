@@ -133,7 +133,7 @@ export async function login(req, res) {
     sameSite: "Strict",
   });
   user.password=undefined;
-
+  
   return res
     .status(200)
     .json(new ApiResponse(200, user, "user login succesfully"));

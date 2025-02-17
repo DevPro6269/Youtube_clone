@@ -2,6 +2,7 @@ import mongoose from "mongoose";
 import Channel from "../model/channel.model.js";
 import ApiError from "../utils/apiError.js";
 import ApiResponse from "../utils/apiResponse.js";
+import { uploadProfileOnCloud } from "../config/cloud.config.js";
 
 export async function createChannel(req, res) {
   const { user } = req;
@@ -10,7 +11,10 @@ export async function createChannel(req, res) {
       .status(404)
       .json(new ApiError(404, "user not found please login and try again"));
   const { channelName, description } = req.body;
-
+  
+  
+  const profilePath = req.file?.path
+     if(!profilePath)return res.status(400).json(new ApiError(400,"please provide a profile for channel"))
   if (!channelName)
     return res.status(400).json(new ApiError(400, "channel name is mandotry"));
 
@@ -20,24 +24,36 @@ export async function createChannel(req, res) {
     return res
       .status(400)
       .json(new ApiError(400, "channel name already taken"));
-
+    
   const isChannelExist = await Channel.findOne({ owner: user._id });
 
   if (isChannelExist)
     return res
       .status(400)
       .json(new ApiError(400, "user have already a channel"));
+ 
+const profile = await uploadProfileOnCloud(profilePath)
+
+console.log(profile);
+
 
   const channel = await Channel.create({
     owner: user._id,
     channelName,
     description,
+    profile:profile.secure_url
   });
 
   if (!channel)
     return res
       .status(500)
       .json(new ApiError(500, "error while creating a channel"));
+
+
+  user.channel = channel._id;
+
+  await user.save();
+
   return res
     .status(201)
     .json(new ApiResponse(201, channel, "channel is created successfully"));

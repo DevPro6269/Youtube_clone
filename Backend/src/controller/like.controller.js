@@ -57,9 +57,13 @@ export async function unlikeVideo(req, res) {
   export async function hasUserLikedVideo(req, res) {
     const { user } = req;
     const { videoId } = req.params;
-  
+
+    console.log(req,"okjhjghf");
+
+    if(!videoId)return res.status(400).json(new ApiError(400, "no video id is provided"));
+
     if (!user) return res.status(400).json(new ApiError(400, "Please login to check if you liked this video"));
-  
+    
     // Find the video
     const video = await Video.findById(videoId);
     if (!video) return res.status(404).json(new ApiError(404, "Video not found"));

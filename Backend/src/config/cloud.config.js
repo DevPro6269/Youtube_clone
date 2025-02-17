@@ -43,4 +43,21 @@ async function uploadThumbnailOnCloud(filepath) {
   }
 }
 
-export { uploadVideoOnCloud, uploadThumbnailOnCloud };
+async function uploadProfileOnCloud(filepath) {
+  try {
+    const result = await cloudinary.uploader.upload(filepath, {
+      resource_type: 'image', // Correct resource type for images (thumbnails)
+      public_id: `youtube_thumbnail_${Date.now()}`, // Use a timestamp-based public ID to ensure uniqueness
+      folder: 'Youtube', // Store images in the 'Youtube' folder
+      eager: [{ width: 400, height: 300, crop: 'pad' }] // Optional: Transcoding options (resize)
+    });
+
+    // Returning the result, which includes image metadata (URL, format, etc.)
+    return result; // This will include the image URL and other details
+  } catch (error) {
+    console.error("Error uploading profile:", error);
+    throw error; // Rethrow the error for further handling
+  }
+}
+
+export { uploadVideoOnCloud, uploadThumbnailOnCloud , uploadProfileOnCloud};

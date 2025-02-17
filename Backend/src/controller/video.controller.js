@@ -6,11 +6,14 @@ import {
 } from "../config/cloud.config.js";
 import Video from "../model/video.model.js";
 import ApiResponse from "../utils/apiResponse.js";
+import mongoose from "mongoose";
 
 
 
 export async function publishVideo(req, res) {
   const { user } = req;
+  console.log(req.files);
+  
   if (!user)
     return res
       .status(400)
@@ -36,7 +39,7 @@ export async function publishVideo(req, res) {
 
   const videoFile = req.files?.video?.[0];
   const thumbnailFile = req.files?.thumbnail?.[0];
-  console.log(req.files);
+
 
   if (!videoFile || !thumbnailFile)
     return res
@@ -44,8 +47,8 @@ export async function publishVideo(req, res) {
       .json(new ApiError(404, "video and thumbnail is required"));
 
   const videoResult = await uploadVideoOnCloud(videoFile.path);
-  const thumbnailResult = await uploadThumbnailOnCloud(thumbnailFile.pathx);
-  console.log(videoResult);
+  const thumbnailResult = await uploadThumbnailOnCloud(thumbnailFile.path);
+  
 
   const video = await Video.create({
     publishedBy: channel._id,
@@ -69,10 +72,10 @@ export async function viewVideo(req, res) {
   const { videoId } = req.params;
   if (!videoId)
     return res.status(400).json(new ApiError(400, "please provide a video id"));
-
+  
   const video = await Video.aggregate([
     {
-      $match: { _id: videoId },
+      $match: { _id: new mongoose.Types.ObjectId(videoId) },
     },
     {
       $lookup: {
@@ -103,7 +106,7 @@ export async function viewVideo(req, res) {
    
     video[0].views+=1;
 
-   await video.sava()
+   await video.save()
    return;
 
 }
