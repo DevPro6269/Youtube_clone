@@ -27,9 +27,7 @@ export async function SignUp(req, res) {
     otpStore[email] = { otp, otpExpiration };
 
     // Respond to the user to inform them that OTP was sent
-    return res.status(200).json({
-      message: "OTP has been sent to your email for verification",
-    });
+    return res.status(200).json(new ApiResponse(200,"otp has been set to your email"));
   } catch (error) {
     console.log(error);
     return res.status(500).json(new ApiError(500, "Error sending OTP"));
@@ -101,10 +99,8 @@ export async function verifyOtp(req, res) {
     });
 
     delete otpStore[email];
-    return res.status(201).json({
-      message: "User created successfully and verified",
-      user: newUser,
-    });
+    newUser.password=undefined;
+    return res.status(201).json(new ApiResponse(201,newUser,"User created successfully and verified"));
   } catch (error) {
     return res.status(500).json(new ApiError(500, "Error creating user"));
   }
@@ -136,10 +132,11 @@ export async function login(req, res) {
     maxAge: 3600000,
     sameSite: "Strict",
   });
+  user.password=undefined;
 
   return res
     .status(200)
-    .json(new ApiResponse(200, null, "user login succesfully"));
+    .json(new ApiResponse(200, user, "user login succesfully"));
 }
 
 export async function logout(req, res) {
