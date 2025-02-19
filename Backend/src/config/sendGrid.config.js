@@ -16,6 +16,8 @@ const generateOTP = () => {
 const sendEmail = async (to) => {
 
     const otp = generateOTP();
+    console.log(otp);
+    
     const otpExpiration = Date.now() + Number(process.env.OTP_EXPIRATION_TIME); // OTP expires after 5 minutes
 
   const msg = {

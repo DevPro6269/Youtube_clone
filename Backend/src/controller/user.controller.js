@@ -1,8 +1,23 @@
+import exp from "constants";
 import sendEmail from "../config/sendGrid.config.js";
 import User from "../model/user.model.js";
 import ApiError from "../utils/apiError.js";
 import ApiResponse from "../utils/apiResponse.js";
 import generateAccessToken from "../utils/genrateAccessToken.js";
+
+const randomProfiles = [
+  "https://cdn.iconscout.com/icon/premium/png-512-thumb/avatar-random-avatar-random-emotion-smiley-3-58875.png?f=webp&w=512",
+  "https://cdn.iconscout.com/icon/premium/png-512-thumb/super-mario-10560121-8651071.png?f=webp&w=512",
+  "https://cdn.iconscout.com/icon/premium/png-512-thumb/robot-2894150-2471737.png?f=webp&w=512",
+  "https://cdn.iconscout.com/icon/premium/png-512-thumb/robot-2894122-2471709.png?f=webp&w=512",
+  "https://cdn.iconscout.com/icon/premium/png-512-thumb/robot-2894130-2471717.png?f=webp&w=512"
+]
+
+function getRandomProfile() {
+  const randomIndex = Math.floor(Math.random() * randomProfiles.length);
+  return randomProfiles[randomIndex];
+}
+
 
 const otpStore = {};
 
@@ -54,7 +69,7 @@ export async function SignUp(req, res) {
 
   //  return res.status(201).json(new ApiResponse(201,newUser,"user sign up successfully"))
 }
-
+ 
 export async function verifyOtp(req, res) {
   const { email, otp } = req.body;
   console.log(req.body);
@@ -86,6 +101,7 @@ export async function verifyOtp(req, res) {
       email,
       password: req.body.password, // Make sure you hash the password before saving
       isVerified: true, // Mark as verified
+      profile:getRandomProfile(),
     });
 
     const token = generateAccessToken(newUser._id); // Use _id as userId
@@ -141,6 +157,8 @@ export async function login(req, res) {
 
 export async function logout(req, res) {
   const { user } = req;
+  console.log("aa gyi ");
+  
   if (!user)
     return res
       .status(404)
@@ -162,6 +180,17 @@ export async function profile(req,res) {
     if(!user)return res.status(404).json(new ApiError(404,"user not found please login and try again"));
     
     return res.status(200).json(new ApiResponse(200,user,"user profile retrived successfully"))
+}
+
+export async function getCurrentUser(req,res) {
+  const{user} = req ;
+  if(!user) return res.status(400).json(new ApiError(400,"user not found please login and try again"))
+  
+    const currentUser = await User.findById(user._id).populate("channel")
+
+    if(!currentUser)return res.status(404).json(new ApiError(400,"user does not exist"));
+
+    return res.status(200).json(new ApiResponse(200,currentUser,"user fetch successfully"))
 }
 
 export async function updateProfile(req,res) {

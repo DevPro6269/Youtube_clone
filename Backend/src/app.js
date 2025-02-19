@@ -24,10 +24,6 @@ app.use(express.json());
 app.use(cookieParser());
 
 // user route
-app.use("/",(req,res,next)=>{
-    console.log("working")
-    next()
-})
 app.use("/api/user",userRoute)
 app.use("/api/channel",channelRoute)
 app.use("/api/comment",commentRoute)

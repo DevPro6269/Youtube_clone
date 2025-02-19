@@ -58,7 +58,7 @@ export async function unlikeVideo(req, res) {
     const { user } = req;
     const { videoId } = req.params;
 
-    console.log(req,"okjhjghf");
+    // console.log(req,"okjhjghf");
 
     if(!videoId)return res.status(400).json(new ApiError(400, "no video id is provided"));
 

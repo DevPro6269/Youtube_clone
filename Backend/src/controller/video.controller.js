@@ -12,7 +12,6 @@ import mongoose from "mongoose";
 
 export async function publishVideo(req, res) {
   const { user } = req;
-  console.log(req.files);
   
   if (!user)
     return res
@@ -63,16 +62,20 @@ export async function publishVideo(req, res) {
     return res
       .status(500)
       .json(new ApiError(500, "error while creating video"));
+
+      channel.videos.push(video._id)
+      await channel.save()
   return res
     .status(201)
     .json(new ApiResponse(200, video, "video uploaded successfully"));
 }
 
 export async function viewVideo(req, res) {
+  
   const { videoId } = req.params;
   if (!videoId)
-    return res.status(400).json(new ApiError(400, "please provide a video id"));
-  
+    return res.status(400).json(new ApiError(400, "Please provide a video id"));
+
   const video = await Video.aggregate([
     {
       $match: { _id: new mongoose.Types.ObjectId(videoId) },
@@ -81,7 +84,7 @@ export async function viewVideo(req, res) {
       $lookup: {
         from: "channels",
         localField: "publishedBy",
-        foreignField: "videos",
+        foreignField: "_id",
         as: "Channel",
       },
     },
@@ -95,24 +98,28 @@ export async function viewVideo(req, res) {
     },
   ]);
 
+  if (!video || video.length === 0)
+    return res.status(400).json(new ApiError(400, "Video does not exist"));
+
+  // Now we fetch the video directly to update the view count
+  const videoDoc = await Video.findById(videoId);
   
+  if (!videoDoc) {
+    return res.status(400).json(new ApiError(400, "Video does not exist"));
+  }
 
-  if (video && video.length === 0)
-    return res.status(400).json(new ApiError(400, "video does not exist"));
+  // Increment the view count
+  videoDoc.views += 1;
 
-   res
-    .status(200)
-    .json(new ApiResponse(200, video, "video retrived successfully"));
-   
-    video[0].views+=1;
+  // Save the updated video
+  await videoDoc.save();
 
-   await video.save()
-   return;
-
+  return res.status(200).json(new ApiResponse(200, video, "Video retrieved successfully"));
 }
 
+
 export async function getAllVideos(req, res) {
-  const videos = await Video.find().select("-videoUrl");
+  const videos = await Video.find().select("-videoUrl").populate("publishedBy")
   if (videos.length == 0)
     return res.status(400).json(new ApiError(400, "no video found"));
 

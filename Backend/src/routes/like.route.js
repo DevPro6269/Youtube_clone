@@ -7,7 +7,7 @@ const router = express.Router();
 
 router.route("/:videoId")
 .get(isAuthenticate,WrapAsync(hasUserLikedVideo))
-.put(isAuthenticate,WrapAsync(unlikeVideo))
+.delete(isAuthenticate,WrapAsync(unlikeVideo))
 .post(isAuthenticate,WrapAsync(likeVideo))
 
 
