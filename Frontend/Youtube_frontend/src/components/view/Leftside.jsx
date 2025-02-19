@@ -1,14 +1,71 @@
-import React from 'react'
+import axios from 'axios';
+import React, { useEffect, useState } from 'react'
+import { useSelector } from 'react-redux';
+import useApiRequest from '../../Hooks/useApiRequest';
 
-const Leftside = () => {
+const Leftside = ({video}) => {
+ 
+  const url = `http://localhost:8000/api/like/${video._id}`
+  const[isLikedByMe,setIsLikedByMe]=useState(false)
+  const user = useSelector((state)=>state.user.user)
+  const isLoggedIn = useSelector((state)=>state.user.isLoggedIn)
+  const[triggerRequest,settriggerRequest] = useState(false)
+  const[likes,setLikes]=useState(0)
+  // console.log(video);
+  
+  const{data,loading,error} = useApiRequest(url,triggerRequest,isLikedByMe?"DELETE":"POST")
+  
+  useEffect(()=>{
+   if(video._id){
+    
+     const url = `http://localhost:8000/api/like/${video._id}`
+     async function fetchData(){
+      try {
+        const response = await axios.get(url,{withCredentials:true})
+        if(response && response.data){
+          console.log(response.data);
+          setIsLikedByMe(response.data.data.hasLiked);
+        
+        }
+      } catch (error) {
+         console.log(error);  
+      }
+    }
+    fetchData()
+   }
+    
+   setLikes(video.likes)
+    if(error){
+      console.log(error)
+      return
+    }
+
+   if(data && data.data){
+    console.log(data)
+    setLikes(data.data.likes)
+  }
+  settriggerRequest(false)
+  },[data,error,video])
+
+ function handleClick(){
+  console.log(user);
+  
+     if(isLoggedIn){
+      console.log("yes");
+      settriggerRequest(true)  
+     }  
+  }
+
+
+
   return (
     <div className='w-[70%]  gap-6 flex flex-col'>
 
 
     <section className='w-[100%]  h-[70%] p-1 mx-auto'>
     <video 
-  className="h-full rounded-2xl w-full max-w-full" 
-  src="https://res.cloudinary.com/dqlryem36/video/upload/v1739518712/Youtube/youtube_video_1739518707198.mp4" 
+  className="h-full rounded-2xl object-cover w-full max-w-full" 
+  src={video&&video.videoUrl} 
   controls
   loop
   autoPlay
@@ -19,16 +76,16 @@ const Leftside = () => {
     </section>
 
     <section className='w-[75%]'>
-        <h1 className='text-xl overflow-hidden p-2 whitespace-nowrap text-ellipsis'>Maiyya Mainu - Lyrical | Jersey | Shahid Kapoor, Mrunal Thakur| Sachet-Parampara| Shellee | Gowtam T iwhkdbkejhbfkjhcbdshjkbejlhfbclhejb</h1>
+        <h1 className='text-xl overflow-hidden p-2 whitespace-nowrap text-ellipsis'>{video&&video.title}</h1>
     </section>
 
      <section className='flex justify-between'>
           <div className='flex gap-3 items-center '>
              <div className='h-12 w-12 rounded-full bg-amber-300'>
-              <img src="" alt="" />
+              <img src={video && video.Channel?.length==1 && video.Channel[0].profile} className='h-full rounded-full w-full' alt="" />
              </div>
              <div className='flex flex-col'>
-              <h1 className='text-xl'>Moon dreams</h1>
+              <h1 className='text-xl'>{video && video.Channel?.length==1 && video.Channel[0].channelName}</h1>
               <p className='text-gray-500'>57.4k subscribers</p>
              </div>
              <div>
@@ -40,9 +97,13 @@ const Leftside = () => {
           <div className='flex items-center gap-2'>
 
             <div className=' bg-zinc-800 rounded-full flex'>
-           <div className='p-2 flex items-center gap-1 hover:bg-zinc-500 rounded-l-full'>
-           <i class="fa-regular  fa-thumbs-up p-1"></i>
-           <p className=''>17K</p>
+           <div onClick={handleClick} className='p-2 flex items-center gap-1 hover:bg-zinc-500 rounded-l-full'>
+          {
+            isLikedByMe?<i class="fa-solid  fa-thumbs-up p-1"></i>:<i class="fa-regular  fa-thumbs-up p-1"></i>
+          }
+            
+          
+           <p className=''>{likes}</p>
            </div>
 
 
@@ -87,7 +148,7 @@ const Leftside = () => {
           {/* /////// */}
 
 {/* section for comment  and review */}
-          <section>
+          <section  >
               <div className='flex gap-12'>
               <div className='p-4'>
               <h1 className='text-xl'>65,318 Comments</h1>
@@ -98,11 +159,11 @@ const Leftside = () => {
                 <p>Sort</p>
               </div>
               </div>
-
+             
               {/* input div add new comment */}
-              <div className='flex items-center gap-3'>
-                <div className='h-10 w-10 bg-amber-200 rounded-full'>
-                  <img src="" alt="" />
+              <div className={`flex ${isLoggedIn?"block":"hidden"} items-center gap-3`}>
+                <div className='h-10 w-10  rounded-full'>
+                  <img src={ user && user.profile} className='h-full w-full object-cover' alt="" />
                 </div>
 
                 <form action="" className='w-full flex gap-2 flex-col'>

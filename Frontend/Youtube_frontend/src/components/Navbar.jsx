@@ -3,15 +3,15 @@ import Profile from "./Profile";
 import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 
-const Navbar = () => {
+const Navbar = ({handleClick=null}) => {
   const userLoggedIn = useSelector((state)=>state.user.isLoggedIn);
   const user = useSelector((state)=>state.user.user)
   const[profile,setProfile]=useState(false)
-
+  
   return (
     <>
-      <nav className="bg-black gap-36 items-center justify-between flex p-3">
-        <div>
+      <nav className="bg-black gap-36 z-10 items-center justify-between flex p-3">
+        <div onClick={handleClick} >
           <i class="fa-solid fa-bars fa-xl" style={{ color: "#ffffff" }}></i>
           &nbsp; &nbsp; &nbsp;
           <i
@@ -76,17 +76,19 @@ const Navbar = () => {
         {/* div for sign in user  */}
 
         <div className={`flex  ${userLoggedIn?"flex":"hidden"} gap-8 mr-2`}>
-             <div className="flex justify-center items-center">
+            <Link to={"/video/new"} className="items-center flex" >
+            <div className="flex justify-center items-center">
              <i class="fa-solid fa-xl fa-video" style={{color: "#f5f7f9"}}>
              </i>
              </div>
+            </Link>
 
              <div className="flex justify-center items-center">
              <i class="fa-regular fa-xl fa-bell" style={{color: "#ffffff"}}></i>
              </div>
-             <div onClick={()=>{setProfile((prev)=>!prev)}} className="h-8 w-8 relative rounded-full">
-            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRuCgYhXnM81IAW-mTKqqjn-jmVIncQAQZq5w&s" className="h-full object-cover rounded-full w-full" alt="" />
-          {profile?<Profile/>:""}
+             <div onClick={()=>{setProfile((prev)=>!prev)}} className="h-8 w-8  relative rounded-full">
+            <img src={user && user.profile} className="h-full object-cover rounded-full w-full" alt="" />
+             {profile?<Profile/>:""}
              </div>
         </div>
       </nav>

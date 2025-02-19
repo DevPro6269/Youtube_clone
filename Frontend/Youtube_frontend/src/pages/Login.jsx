@@ -19,11 +19,14 @@ const Login = () => {
 const {data,loading,error}=useApiRequest(url,triggerRequest,"POST",formData)
 
  useEffect(()=>{
-    if(data.statusCode==200){        
+    if(data.statusCode==200){  
+        console.log(data);
+              
         dispatch(setLoggedIn(data.data))
         navigate("/")
     }
- },[data])
+    console.log(triggerRequest)
+ },[data,triggerRequest])
 
 function handleSubmit(e){
     e.preventDefault();

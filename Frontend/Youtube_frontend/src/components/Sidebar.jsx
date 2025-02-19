@@ -2,11 +2,11 @@ import React, { use } from "react";
 import { Link } from "react-router-dom";
 import Options from "./Sidebar/Options";
 import { useSelector } from "react-redux";
-const Sidebar = () => {
+const Sidebar = ({position="relative"}) => {
   const userLoggedIn = useSelector((state)=>state.user.isLoggedIn);
 
   return (
-    <div className="bg-black h-screen w-[18%] overflow-auto text-white  px-4 p-2">
+    <div className={`bg-black h-screen w-[18%] z-10 ${position}  overflow-auto text-white  px-4 p-2`}>
       <div className="w-fit hidden">
         <i class="fa-solid fa-bars fa-xl" style={{ color: "#ffffff" }}></i>
         &nbsp; &nbsp; &nbsp;
@@ -21,7 +21,7 @@ const Sidebar = () => {
 
       {/* ///////////////////    options ///// */}
       <div className="flex mt-2  flex-col">
-        <Link>
+        <Link to={"/"}>
           <Options
             icon={
               <i class="fa-solid fa-house" style={{ color: "#ffffff" }}></i>

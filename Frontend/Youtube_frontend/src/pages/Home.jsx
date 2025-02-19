@@ -6,11 +6,15 @@ import Signup from './Signup'
 import Login from './Login'
 import Profile from '../components/Profile'
 import { CreateChannel } from './CreateChannel'
+import CategoryBar from '../components/Home/CategoryBar'
 
 const Home = () => {
   return (
-   <>
-    <VideoGrid/>
+   <> 
+   {/* <div className=' border-4 border-red-400 bg-blue-500 flex flex-col'> */}
+    {/* <CategoryBar/> */}
+   <VideoGrid/>
+   {/* </div> */}
    </>
   )
 }

@@ -1,25 +1,32 @@
 import { createSlice } from "@reduxjs/toolkit";
 
+// Initial state with localStorage fallback
+const userState = JSON.parse(localStorage.getItem("userState")) || {
+  user: null,
+  isLoggedIn: false,
+};
+
 const user = createSlice({
   name: "user",
-  initialState: {
-    user: null,  // Initially, no user is logged in
-    isLoggedIn: false,  // Initially, user is not logged in
-  },
+  initialState: userState,
   reducers: {
     setLoggedIn: (state, action) => {
-      // This action should carry user data (e.g., token, user info)
-      state.user = action.payload;  // Set user data from the action payload
-      state.isLoggedIn = true;  // Mark user as logged in
+      state.user = action.payload;
+      state.isLoggedIn = true;
+      localStorage.setItem("userState", JSON.stringify(state));
     },
     setLoggedOut: (state) => {
-      // When logging out, reset the user data and isLoggedIn to false
       state.user = null;
       state.isLoggedIn = false;
+      localStorage.removeItem("userState");
+    },
+    setUser: (state, action) => {
+      // This will update the user data in the Redux store when polling returns new data
+      state.user = action.payload;
     },
   },
 });
 
-export const { setLoggedIn, setLoggedOut } = user.actions;
+export const { setLoggedIn, setLoggedOut, setUser } = user.actions;
 
 export default user.reducer;

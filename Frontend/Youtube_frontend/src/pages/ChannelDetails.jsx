@@ -1,7 +1,28 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import VideoCard from '../components/Channel/VideoCard'
+import { useParams } from 'react-router-dom'
+import axios from 'axios'
 
 const ChannelDetails = () => {
+  
+  const [channel,setChannel]= useState(null)
+  const {channelId}= useParams()
+   const url = `http://localhost:8000/api/channel/${channelId}`
+
+  useEffect(()=>{
+   async function fetchData(){
+    const response =   await axios.get(url,{withCredentials:true})
+
+      if(response && response.data){
+        console.log(response.data.data[0]);
+        
+      }
+    }
+    fetchData()
+  },[])
+
+
+
   return (
    <>
    <div className='w-[82%] p-2 flex gap-4 flex-col text-white bg-black h-screen'>

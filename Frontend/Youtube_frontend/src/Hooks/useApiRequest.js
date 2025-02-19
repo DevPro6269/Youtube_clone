@@ -7,7 +7,7 @@ function useApiRequest(url,triggerRequest, method = "GET", reqData = null, withC
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    console.log(triggerRequest);
+    // console.log(triggerRequest);
     setError(null)
     if (!triggerRequest) return;
 
@@ -21,7 +21,7 @@ function useApiRequest(url,triggerRequest, method = "GET", reqData = null, withC
         };
 
         if (method === "GET") {
-          console.log("1g");
+      
           
           response = await axios.get(url, config);
         } else if (method === "POST") {  
@@ -32,7 +32,7 @@ function useApiRequest(url,triggerRequest, method = "GET", reqData = null, withC
           response = await axios.delete(url, config);
         }
         
-        console.log(response);
+        // console.log(response);
 
         if (response && response.data) {
           setData(response.data);

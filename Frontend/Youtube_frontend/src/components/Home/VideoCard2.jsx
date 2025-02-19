@@ -1,30 +1,33 @@
 import React from 'react'
-
-const VideoCard2 = ({thumbnail,title,channel,views,channelProfile}) => {
+import { Link } from 'react-router-dom';
+const VideoCard2 = ({video}) => {
+  
   return (
     <div className="flex flex-col gap-2">
-          <div className="h-52 w-84">
+         <Link to={`/youtube/video/${video._id}`}>
+         <div className="h-52 w-84">
             <img
-              className=" h-full w-full"
-              src={thumbnail}
+              className=" object-cover h-full w-full"
+              src={video.thumbnailUrl}
               alt=""
             />
           </div>
+         </Link>
 
 
           <div className="flex w-84 items-center gap-2">
 
-            <div className="h-12 w-[15%] self-start bg-yellow-400 rounded-full">
-              <img src={channelProfile} className='h-full w-full object-cover rounded-full' alt="" />
+            <div className="h-10 w-10 p-[2px] self-start  rounded-full">
+              <img src={video.publishedBy.profile} className='h-full w-full object-cover rounded-full' alt="" />
             </div>
 
             <div className="w-[70%]">
              <div className="flex flex-col">
              <p className=" text-ellipsis text-white  w-full line-clamp-2">
-              {title}
+              {video.title}
               </p>
-              <p className="text-gray-600">{channel}</p>
-              <p className="text-gray-600">{views}</p>
+              <p className="text-gray-600">{video.publishedBy.channelName}</p>
+              <p className="text-gray-500 text-[15px]">{video.views} views . 5 years ago</p>
              </div>
             </div>
             

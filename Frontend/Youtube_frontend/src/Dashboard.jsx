@@ -8,8 +8,10 @@ import Login from './pages/Login'
 import { CreateChannel } from './pages/CreateChannel'
 import Layout from './Layout/Layout'
 import { useSelector } from 'react-redux'
-import ProtectedRoute from "./Hooks/protectedRoute.jsx"
+import ProtectedRoute from "./utils/protectedRoute.jsx"
 import OtpVerification from './components/VerifyOtp.jsx'
+import UploadVideo from './pages/UploadVideo.jsx'
+import ProtectedChannel from './utils/ProtectedChannel.jsx'
 
 const Dashboard = () => {
 
@@ -31,25 +33,35 @@ const userLoggedIn = useSelector((state)=>state.user.isLoggedIn)
         element:<Login/>
       }
       ,{
-        path:"/channel",
+        path:"/channel/:channelId",
         element:<ChannelDetails/>
       }
       ,{
         path:"/verify",
         element:<OtpVerification/>
+      },
+      {
+        path:"/video/new",
+        element:<ProtectedRoute>
+          <ProtectedChannel>
+          <UploadVideo/>
+          </ProtectedChannel>
+        </ProtectedRoute>
+      },
+      {
+        path:"/youtube/channel/new",
+        element:<ProtectedRoute>
+          <CreateChannel/>
+        </ProtectedRoute>
       }
     ]
   },
   {
-    path:"/yotube/video",
+    path:"/youtube/video/:videoId",
     element:<View/>
   },
-  {
-    path:"/youtube/channel/new",
-    element:<ProtectedRoute>
-      <CreateChannel/>
-    </ProtectedRoute>
-  }
+ 
+  ,
   ])
 
 
