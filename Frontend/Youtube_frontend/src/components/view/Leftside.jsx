@@ -2,30 +2,54 @@ import axios from 'axios';
 import React, { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux';
 import useApiRequest from '../../Hooks/useApiRequest';
+import { toast } from 'react-toastify';
+import ReviewCard from './ReviewCard';
 
 const Leftside = ({video}) => {
- 
+  const[message,setMessage]=useState("")
+  const[comments,setComments]=useState([])
+  const[isSubscribed,setIsSubscribed]=useState(false)
   const url = `http://localhost:8000/api/like/${video._id}`
   const[isLikedByMe,setIsLikedByMe]=useState(false)
   const user = useSelector((state)=>state.user.user)
   const isLoggedIn = useSelector((state)=>state.user.isLoggedIn)
   const[triggerRequest,settriggerRequest] = useState(false)
   const[likes,setLikes]=useState(0)
-  // console.log(video);
+  
   
   const{data,loading,error} = useApiRequest(url,triggerRequest,isLikedByMe?"DELETE":"POST")
   
+useEffect(()=>{
+if(video.publishedBy){ 
+  const subscribeUrl = `http://localhost:8000/api/subscribe/${video.publishedBy}`
+  
+  async function fetchData(){
+    try {
+      const response = await axios.get(subscribeUrl,{withCredentials:true})
+      if((response && response.data)){
+        console.log(response.data)
+      }
+    } catch (error) {
+       console.log(error);  
+    }
+  }
+  fetchData()
+}
+  
+},[video])
+
+
   useEffect(()=>{
    if(video._id){
+    
     
      const url = `http://localhost:8000/api/like/${video._id}`
      async function fetchData(){
       try {
         const response = await axios.get(url,{withCredentials:true})
-        if(response && response.data){
+        if((response && response.data)){
           console.log(response.data);
           setIsLikedByMe(response.data.data.hasLiked);
-        
         }
       } catch (error) {
          console.log(error);  
@@ -33,6 +57,7 @@ const Leftside = ({video}) => {
     }
     fetchData()
    }
+   setComments(video.comments)
     
    setLikes(video.likes)
     if(error){
@@ -48,18 +73,69 @@ const Leftside = ({video}) => {
   },[data,error,video])
 
  function handleClick(){
-  console.log(user);
-  
      if(isLoggedIn){
       console.log("yes");
       settriggerRequest(true)  
-     }  
+     }  else{
+      toast.error("Please Login first")
+     }
+  }
+
+ async function handleCommentClick(e){
+  e.preventDefault()
+
+console.log(video);
+
+   if(!message){
+    return
+   }
+
+    if(isLoggedIn){
+
+      try {
+        const response = await axios.post(`http://localhost:8000/api/comment/${video._id}`,{message},{
+          withCredentials:true
+        })
+ 
+        if(response && response.data){
+         if(response.data.statusCode==201){
+          setComments((prev)=>{
+            return [...prev,response.data.data]
+          })
+            toast.success("comment added successfully")
+            setMessage("")
+         }
+         
+        }
+        
+      } catch (error) {
+       console.log(error);
+      }
+
+
+    }
+  }
+
+  async function handleDeleteComment(e,comment){
+    e.preventDefault()
+   try {
+    const url = `http://localhost:8000/api/comment/${ comment&& comment._id}`
+    const response = await axios.delete(url,{withCredentials:true})
+    if(response && response.data.statusCode==200){
+    const res =   comments.filter((c)=>c._id!==comment._id)
+    setComments(res)
+    toast.success("comment deleted successfully")
+    }
+   } catch (error) {
+    console.log(error);
+    
+   }
+  
   }
 
 
-
   return (
-    <div className='w-[70%]  gap-6 flex flex-col'>
+    <div className='w-[70%] h-screen gap-6 flex flex-col'>
 
 
     <section className='w-[100%]  h-[70%] p-1 mx-auto'>
@@ -88,8 +164,11 @@ const Leftside = ({video}) => {
               <h1 className='text-xl'>{video && video.Channel?.length==1 && video.Channel[0].channelName}</h1>
               <p className='text-gray-500'>57.4k subscribers</p>
              </div>
-             <div>
-              <button className='p-2 rounded-full bg-white text-black'>Subscribe</button>
+             <div onClick={()=>setIsSubscribed((prev)=>!prev)}>
+              {
+                isSubscribed?  <button className='p-2 rounded-full bg-zinc-700 px-4'><i class="fa-regular fa-bell"></i>  Subscribed</button>:
+                <button className='p-2 rounded-full bg-white text-black'>Subscribe</button>
+              }
              </div>
           </div>
 
@@ -166,13 +245,13 @@ const Leftside = ({video}) => {
                   <img src={ user && user.profile} className='h-full w-full object-cover' alt="" />
                 </div>
 
-                <form action="" className='w-full flex gap-2 flex-col'>
+                <form action="" onSubmit={handleCommentClick} className='w-full flex gap-2 flex-col'>
                 <div className='w-[100%]'>
-                  <input type="text" className='outline-none w-full border-b' placeholder='add comment' />
+                  <input type="text" value={message} onChange={(e)=>setMessage(e.target.value)} className='outline-none w-full border-b' placeholder='add comment' />
                 </div>
                 <div className='flex gap-5 self-end'>
                    <button className='p-2 hover:bg-gray-700 px-3 rounded-3xl'>cancel</button>
-                   <button className='p-2 bg-gray-700 px-4 rounded-2xl'>comment</button>
+                   <button onClick={handleCommentClick} className='p-2 bg-gray-700 px-4 rounded-2xl'>comment</button>
                 </div>
                 </form>
               </div>
@@ -181,20 +260,12 @@ const Leftside = ({video}) => {
 
 {/* section for showing comments */}
   
-  <section>
-    <div className='flex items-center gap-2'>
-      <div className=' w-[6%] rounded-full'>
-      <img src="https://plus.unsplash.com/premium_photo-1664474619075-644dd191935f?fm=jpg&q=60&w=3000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8aW1hZ2V8ZW58MHx8MHx8fDA%3D" className='w-12 h-12 object-cover rounded-full ' alt="" />
-      </div>
-
-      <div className='w-[75%]'>
-        <p>@Xavier . <span className='text-gray-400'>2 years ago</span></p>
-        <p>I think this was the peak of srk's look. He had never looked as good as he was in this movie.even those highlights of his hair is fab. This movie is a master piece. Everything about it is beautiful. Story, dailogues, acting, location, background scores and songs everything.</p>
-      </div>
-      <div className='w-[15%] flex justify-end'>
-      <i class="fa-solid fa-lg fa-ellipsis-vertical  hover:bg-zinc-600"></i>
-      </div>
-    </div>
+  <section className='flex flex-col gap-8'>
+   {
+    comments && comments.map((comment,index)=>{
+      return <ReviewCard fn={(e)=>handleDeleteComment(e,comment)}  key={index} comment={comment} />
+    })
+   }
 
   </section>
 

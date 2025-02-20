@@ -5,6 +5,7 @@ import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { setLoggedOut } from '../Store/userSlice';
+import { toast } from 'react-toastify';
 const Profile = () => {
    const dispatch = useDispatch();
    const navigate = useNavigate();
@@ -12,9 +13,10 @@ const Profile = () => {
 
  const userLoggedIn = useSelector((state)=>state.user.isLoggedIn);
 const user = useSelector((state)=>state.user.user);
-const channelId = user.channel
+const channelId = user.channel._id
 
-console.log(user);
+
+console.log(channelId);
 
 
 async function handleClick(){
@@ -22,8 +24,8 @@ try {
     const response =  await axios.post(url,{},{withCredentials:true})
 if(response && response.data){
     if(response.data.statusCode==200){
-        alert("log out succefully")
         dispatch(setLoggedOut());
+        toast.success("user log out successfully !!!!")
         navigate("/")
     }
     console.log(response.data);   

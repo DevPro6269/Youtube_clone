@@ -1,26 +1,54 @@
 import React, { useEffect, useState } from 'react'
 import VideoCard from '../components/Channel/VideoCard'
-import { useParams } from 'react-router-dom'
+import { Link, useParams } from 'react-router-dom'
 import axios from 'axios'
+import { useSelector } from 'react-redux'
+import {toast} from "react-toastify"
 
 const ChannelDetails = () => {
-  
+  const[videos,setVideos] = useState([])
   const [channel,setChannel]= useState(null)
   const {channelId}= useParams()
    const url = `http://localhost:8000/api/channel/${channelId}`
+    const user = useSelector((state)=>state.user.user);
 
+     const owner = channel?.owner.toString() ===  user && user._id.toString()
+      
   useEffect(()=>{
    async function fetchData(){
     const response =   await axios.get(url,{withCredentials:true})
 
       if(response && response.data){
         console.log(response.data.data[0]);
-        
+        setChannel(response.data.data[0])
+        setVideos(response.data.data[0].ChannelVideos )
       }
     }
     fetchData()
   },[])
 
+
+  async function handleDeleteVideo(e,video){
+    
+    e.preventDefault()
+    
+
+   try {
+    const url = `http://localhost:8000/api/video/${ video && video._id}`
+    console.log(url);
+    
+    const response = await axios.delete(url,{withCredentials:true})
+    if(response && response.data.statusCode==200){
+    const res =   videos.filter((c)=>c._id!==video._id)
+    setVideos(res)
+    toast.success("Video deleted successfully")
+    }
+   } catch (error) {
+    console.log(error);
+    
+   }
+  
+  }
 
 
   return (
@@ -35,17 +63,21 @@ const ChannelDetails = () => {
 
 
       <section className=' h-[21%] w-[90%] flex gap-2 '>
-        <div className=' h-full w-[16%] rounded-full bg-red-500'>
-        <img src="https://lh3.googleusercontent.com/a/ACg8ocJx8fVZU6jbTTV07FaYwUPbur-tb2s7mptPFQpu8OWmABH_0544=s576-c-no"
+        <div className=' h-full w-[16%] rounded-full '>
+        <img src={channel && channel.profile}
         className='w-full h-full rounded-full object-cover'
         alt="" />
         </div>
         <div className='flex flex-col gap-2'>
-             <h1 className='text-3xl'>Deva Bhai</h1>
-             <h1>@devabhai11m . <span className='text-gray-400'>6.3M Subscribers . 2.8K Videos</span></h1>
-              <p>Welcome to the official YouTube channel for the UK's No.1 Hit Music Station, Capital 🎉
+             <h1 className='text-3xl'>{channel && channel.channelName}</h1>
+             <h1>@devabhai11m . <span className='text-gray-400'>6.3M Subscribers . {videos.length} Videos</span></h1>
+              <p>{channel && channel.description }
               </p>
-              <button className='p-2 rounded-4xl bg-white text-black w-32'>Subscribe</button>
+              <button className={`p-2 rounded-4xl ${owner?"hidden":"block"} bg-white text-black w-32`}>Subscribe</button>
+              <div className={`${owner?"block":"hidden"}  flex gap-4`} >
+              <button className='p-2 px-4 rounded-4xl  bg-zinc-700 hover:bg-zinc-600 '>Manage Videos</button>
+              <button className='p-2 px-4 rounded-4xl bg-zinc-700 hover:bg-zinc-600 '>Customize channel</button>
+              </div>
         </div>
       </section>
 
@@ -65,8 +97,12 @@ const ChannelDetails = () => {
                 <button className='bg-zinc-700 rounded-md px-4 p-[5px]'>Oldest</button>
             </div>
 
-     <div className='flex flex-wrap p-2'>
-      <VideoCard/>
+     <div className='flex gap-8 flex-wrap p-2'>
+     { 
+    videos &&  videos.map((video,index)=>{
+        return <VideoCard fn={(e)=>handleDeleteVideo(e,video)} key={index} video={video} />
+      })
+     }
      </div>
 
 

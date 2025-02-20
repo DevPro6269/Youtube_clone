@@ -3,14 +3,14 @@ import Profile from "./Profile";
 import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 
-const Navbar = ({handleClick=null}) => {
+const Navbar = ({handleClick=null,searchQuery,onSearchChange}) => {
   const userLoggedIn = useSelector((state)=>state.user.isLoggedIn);
   const user = useSelector((state)=>state.user.user)
   const[profile,setProfile]=useState(false)
   
   return (
     <>
-      <nav className="bg-black gap-36 z-10 items-center justify-between flex p-3">
+      <nav className="bg-black gap-36 z-10 sticky top-0 items-center justify-between flex p-3">
         <div onClick={handleClick} >
           <i class="fa-solid fa-bars fa-xl" style={{ color: "#ffffff" }}></i>
           &nbsp; &nbsp; &nbsp;
@@ -28,11 +28,14 @@ const Navbar = ({handleClick=null}) => {
         <div className="flex gap-5">
           <div className="flex items-center">
             <input
+              
               placeholder="search"
               className="h-10 w-[500px] outline text-gray-500 rounded-l-full px-3 outline-gray-500"
               type="text"
               name=""
               id=""
+              value={searchQuery}
+              onChange={(e)=>onSearchChange(e.target.value)}
             />
             <div className="bg-slate-800 outline outline-gray-500 h-[40px] flex justify-center items-center rounded-r-full w-12">
               <i

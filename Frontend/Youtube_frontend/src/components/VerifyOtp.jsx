@@ -3,7 +3,7 @@ import useApiRequest from '../Hooks/useApiRequest';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { setLoggedIn } from '../Store/userSlice';
-
+import { toast } from 'react-toastify';
 
 const VerifyOtp = ({ isVisible, setIsVisible,formData }) => {
     const dispatch = useDispatch()
@@ -23,6 +23,7 @@ useEffect(() => {
       console.log(data);
     if (data && data.statusCode === 201 && !error) {
        dispatch(setLoggedIn(data.data))
+       toast.success("Sign-up Successfully !!")
       navigate("/")
       // Show OTP verification form after successful signup
     }

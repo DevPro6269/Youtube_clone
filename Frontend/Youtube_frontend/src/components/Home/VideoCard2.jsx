@@ -1,9 +1,10 @@
 import React from 'react'
 import { Link } from 'react-router-dom';
 const VideoCard2 = ({video}) => {
+
   
   return (
-    <div className="flex flex-col gap-2">
+    <div className="flex relative flex-col gap-2">
          <Link to={`/youtube/video/${video._id}`}>
          <div className="h-52 w-84">
             <img
@@ -17,9 +18,11 @@ const VideoCard2 = ({video}) => {
 
           <div className="flex w-84 items-center gap-2">
 
-            <div className="h-10 w-10 p-[2px] self-start  rounded-full">
+           <Link to={`/channel/${video.publishedBy._id}`} >
+           <div className="h-10 w-10 p-[2px] self-start  rounded-full">
               <img src={video.publishedBy.profile} className='h-full w-full object-cover rounded-full' alt="" />
             </div>
+           </Link>
 
             <div className="w-[70%]">
              <div className="flex flex-col">
@@ -36,6 +39,9 @@ const VideoCard2 = ({video}) => {
             </div>
 
           </div>
+
+
+
         </div>
   )
 }

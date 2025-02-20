@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Link } from "react-router-dom";
 import useApiRequest from '../Hooks/useApiRequest';
 import VerifyOtp from '../components/VerifyOtp';
+import { toast } from 'react-toastify';
 
 const Signup = () => {
   const [isVisible, setIsVisible] = useState(false);  
@@ -37,9 +38,9 @@ const Signup = () => {
       
     if (data && data.statusCode === 200 && !error) {
       console.log(data);
+      toast.success("Otp sent to the mail")
       setIsVisible(true); // Show OTP verification form after successful signup
     }
-
 
     setTriggerRequest(false); // Reset the trigger once the request completes
   }, [data, error]);

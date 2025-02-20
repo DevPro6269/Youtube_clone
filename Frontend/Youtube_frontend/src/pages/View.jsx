@@ -12,6 +12,7 @@ import Sidebar from "../components/Sidebar"
 
 
 const View = () => {
+  const[loading ,setLoading]=useState(false)
 const[video,setVideo]=useState({})
 const {videoId} = useParams()
 const url = `http://localhost:8000/api/video/${videoId}`
@@ -28,6 +29,7 @@ const [isSideBarOpen,setIsSideBarOpen]=useState(false)
 useEffect(()=>{
   const fetchVideos = async () => {
     try {
+      setLoading(true)
       const response = await axios.get(url);
 
       if (response && response.data) {
@@ -39,11 +41,14 @@ useEffect(()=>{
     } catch (error) {
       console.log(error);
     }
+    finally{
+      setLoading(false)
+    }
   };
    if(videoId){
      fetchVideos();
    }
-},[])
+},[url])
 
 function handleClick(){
    setIsSideBarOpen((prev)=>!prev)

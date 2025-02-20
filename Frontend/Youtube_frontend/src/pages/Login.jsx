@@ -3,6 +3,8 @@ import useApiRequest from "../Hooks/useApiRequest.js"
 import { useNavigate } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
 import { setLoggedIn } from '../Store/userSlice.js'
+import { toast } from 'react-toastify';
+
 
 const Login = () => {
    const dispatch = useDispatch()
@@ -24,6 +26,7 @@ const {data,loading,error}=useApiRequest(url,triggerRequest,"POST",formData)
               
         dispatch(setLoggedIn(data.data))
         navigate("/")
+        toast.success(`Login successful! Welcome!`); // Success toast
     }
     console.log(triggerRequest)
  },[data,triggerRequest])
