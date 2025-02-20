@@ -6,6 +6,8 @@ import channelRoute from "./routes/channel.route.js"
 import commentRoute from "./routes/comment.route.js"
 import videoRoute from "./routes/video.route.js"
 import likeVideoRoute from "./routes/like.route.js"
+import subscriberRoute from "./routes/subscribe.route.js"
+
 import cors from "cors"
 const app = express();
 
@@ -29,6 +31,7 @@ app.use("/api/channel",channelRoute)
 app.use("/api/comment",commentRoute)
 app.use("/api/video",videoRoute)
 app.use("/api/like",likeVideoRoute)
+app.use("/api/subscribe",subscriberRoute)
 
 app.post("/api/verify",verifyOtp)
 // Error handling middleware

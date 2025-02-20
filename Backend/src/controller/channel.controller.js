@@ -117,16 +117,26 @@ export async function getChannelDetails(req, res) {
       $lookup: {
         from: "videos",
         localField: "videos",
-        foreignField: "publishedBy",
-        as: "Videos",
+        foreignField: "_id",
+        as: "ChannelVideos",
       },
     },
+    {
+      $project:{
+       videos:0
+      }
+    }
+    
   ]);
+
+
+
   if (channel && channel.length < 0)
     return res
       .status(404)
       .json(new ApiError(404, "channel does not exist for this id"));
-
+  console.log(channel);
+  
   return res
     .status(200)
     .json(new ApiResponse(200, channel, "channel details fetch successfully"));

@@ -26,8 +26,9 @@ router
     WrapAsync(publishVideo)
   )
   .put(isAuthenticate, WrapAsync(updateVideo))
-  .delete(isAuthenticate, WrapAsync(deleteVideo));
 
-router.route("/:videoId").get(WrapAsync(viewVideo));
+  
+  router.route("/:videoId").get(WrapAsync(viewVideo))
+  .delete(isAuthenticate, WrapAsync(deleteVideo));
 
 export default router;

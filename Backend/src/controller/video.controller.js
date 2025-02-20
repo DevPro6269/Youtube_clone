@@ -130,33 +130,48 @@ export async function getAllVideos(req, res) {
 
 export async function deleteVideo(req, res) {
   const { user } = req;
-  if (!user)
-    return res
-      .status(400)
-      .json(new ApiError(400, "no user found please login and try again"));
+
+  if (!user) {
+    return res.status(400).json(new ApiError(400, "No user found, please log in and try again."));
+  }
+
   const { videoId } = req.params;
-  if (!videoId)
-    return res.status(400).json(new ApiError(400, "please provide a video id"));
+  if (!videoId) {
+    return res.status(400).json(new ApiError(400, "Please provide a video ID."));
+  }
 
+  // Find the video by ID
   const video = await Video.findById(videoId);
-  if (!video)
-    return res
-      .status(404)
-      .json(new ApiError(404, "video not fount with provided id "));
+  if (!video) {
+    return res.status(404).json(new ApiError(404, "Video not found with the provided ID."));
+  }
+  // Check if the logged-in user is the owner of the video
+  if (video.publishedBy.toString()!== user.channel.toString()) {
+    return res.status(403).json(new ApiError(403, "You are not authorized to delete this video."));
+  }
 
-  if (video.owner.toString() !== user._id.toString())
-    return res
-      .status(404)
-      .json(new ApiError(403, "you are not authorixed to this route"));
+  // Delete the video from the Video collection
+  try {
+    // Remove the video from the associated Channel's video list (assuming the channel has a `videos` field)
+    await Channel.findByIdAndUpdate(
+      video.owner,
+      { $pull: { videos: videoId } },
+      { new: true }
+    );
 
+    // Now delete the video
+    const deletedVideo = await Video.findByIdAndDelete(videoId);
+    
+    if (!deletedVideo) {
+      return res.status(500).json(new ApiError(500, "Error while deleting the video."));
+    }
 
-      const deletedVideo= Video.findByIdAndDelete(videoId);
-
-      if(!deletedVideo)return res.status(500).json(new ApiError(500,"error while deleting video"))
-       
-       return res.status(200).json(new ApiResponse(200,null,"video deleted successfully")) 
-
+    return res.status(200).json(new ApiResponse(200, null, "Video deleted successfully."));
+  } catch (error) {
+    return res.status(500).json(new ApiError(500, "Unexpected error: " + error.message));
+  }
 }
+
 
 export async function updateVideo(req, res) {
     const { user } = req;
