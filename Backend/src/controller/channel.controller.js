@@ -34,7 +34,6 @@ export async function createChannel(req, res) {
  
 const profile = await uploadProfileOnCloud(profilePath)
 
-console.log(profile);
 
 
   const channel = await Channel.create({
@@ -135,7 +134,6 @@ export async function getChannelDetails(req, res) {
     return res
       .status(404)
       .json(new ApiError(404, "channel does not exist for this id"));
-  console.log(channel);
   
   return res
     .status(200)

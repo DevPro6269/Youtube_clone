@@ -157,7 +157,6 @@ export async function login(req, res) {
 
 export async function logout(req, res) {
   const { user } = req;
-  console.log("aa gyi ");
   
   if (!user)
     return res

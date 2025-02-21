@@ -27,7 +27,7 @@ router
   )
   .put(isAuthenticate, WrapAsync(updateVideo))
 
-  
+
   router.route("/:videoId").get(WrapAsync(viewVideo))
   .delete(isAuthenticate, WrapAsync(deleteVideo));
 

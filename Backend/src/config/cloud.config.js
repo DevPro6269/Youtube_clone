@@ -1,10 +1,13 @@
-import { v2 as cloudinary } from "cloudinary";
+import { v2 as cloudinary } from 'cloudinary';
+import fs from 'fs';
+import path from 'path';
 
 // Cloudinary configuration
 cloudinary.config({
   cloud_name: process.env.CLOUD_NAME,
   api_key: process.env.CLOUD_API_KEY,
   api_secret: process.env.CLOUD_SECRET,
+  secure: true,
 });
 
 // Function to upload a video to Cloudinary
@@ -17,8 +20,11 @@ async function uploadVideoOnCloud(filepath) {
       eager: [{ width: 400, height: 300, crop: 'pad' }] // Optional: Transcoding options (resize)
     });
 
+    // Delete the local video file after uploading
+    fs.unlinkSync(filepath); // Synchronously unlink (delete) the file
+
     // Returning the result, which includes video metadata (URL, format, etc.)
-    return result; // This will include the video URL and other details
+    return result; 
   } catch (error) {
     console.error("Error uploading video:", error);
     throw error; // Rethrow the error for further handling
@@ -35,29 +41,36 @@ async function uploadThumbnailOnCloud(filepath) {
       eager: [{ width: 400, height: 300, crop: 'pad' }] // Optional: Transcoding options (resize)
     });
 
+    // Delete the local thumbnail file after uploading
+    fs.unlinkSync(filepath); // Synchronously unlink (delete) the file
+
     // Returning the result, which includes image metadata (URL, format, etc.)
-    return result; // This will include the image URL and other details
+    return result;
   } catch (error) {
     console.error("Error uploading thumbnail:", error);
     throw error; // Rethrow the error for further handling
   }
 }
 
+// Function to upload a profile picture to Cloudinary
 async function uploadProfileOnCloud(filepath) {
   try {
     const result = await cloudinary.uploader.upload(filepath, {
-      resource_type: 'image', // Correct resource type for images (thumbnails)
-      public_id: `youtube_thumbnail_${Date.now()}`, // Use a timestamp-based public ID to ensure uniqueness
+      resource_type: 'image', // Correct resource type for images (profile pictures)
+      public_id: `youtube_profile_${Date.now()}`, // Use a timestamp-based public ID to ensure uniqueness
       folder: 'Youtube', // Store images in the 'Youtube' folder
       eager: [{ width: 400, height: 300, crop: 'pad' }] // Optional: Transcoding options (resize)
     });
 
+    // Delete the local profile picture file after uploading
+    fs.unlinkSync(filepath); // Synchronously unlink (delete) the file
+
     // Returning the result, which includes image metadata (URL, format, etc.)
-    return result; // This will include the image URL and other details
+    return result;
   } catch (error) {
     console.error("Error uploading profile:", error);
     throw error; // Rethrow the error for further handling
   }
 }
 
-export { uploadVideoOnCloud, uploadThumbnailOnCloud , uploadProfileOnCloud};
+export { uploadVideoOnCloud, uploadThumbnailOnCloud, uploadProfileOnCloud };

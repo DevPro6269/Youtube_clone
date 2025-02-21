@@ -30,8 +30,8 @@ export async function publishVideo(req, res) {
       .status(400)
       .json(new ApiError(400, "you are not authorized to this process"));
 
-  const { title, description, tags } = req.body;
-  if (!title || !description)
+  const { title, description, category , } = req.body;
+  if (!title || !description||!category)
     return res
       .status(400)
       .json(new ApiError(400, "title and description is required"));
@@ -51,7 +51,7 @@ export async function publishVideo(req, res) {
 
   const video = await Video.create({
     publishedBy: channel._id,
-    tags,
+    category,
     videoUrl: videoResult.secure_url, // Store video URL
     thumbnailUrl: thumbnailResult.secure_url, // Store thumbnail URL
     description,
@@ -75,6 +75,9 @@ export async function viewVideo(req, res) {
   const { videoId } = req.params;
   if (!videoId)
     return res.status(400).json(new ApiError(400, "Please provide a video id"));
+  
+
+
 
   const video = await Video.aggregate([
     {
@@ -119,7 +122,18 @@ export async function viewVideo(req, res) {
 
 
 export async function getAllVideos(req, res) {
-  const videos = await Video.find().select("-videoUrl").populate("publishedBy")
+
+ const {category,title,sortBy} = req.query;
+
+ const filterCriteria = category && category !== 'All' ? { category } : {};
+
+ if(title){
+  filterCriteria.title = { $regex: title, $options: 'i' }
+ }
+
+ const sortCriteria = sortBy ? { [sortBy]: 1 } : { createdAt: -1 }
+ 
+  const videos = await Video.find(filterCriteria).select("-videoUrl").populate("publishedBy").sort(sortCriteria)
   if (videos.length == 0)
     return res.status(400).json(new ApiError(400, "no video found"));
 
@@ -154,7 +168,7 @@ export async function deleteVideo(req, res) {
   try {
     // Remove the video from the associated Channel's video list (assuming the channel has a `videos` field)
     await Channel.findByIdAndUpdate(
-      video.owner,
+      video.publishedBy,
       { $pull: { videos: videoId } },
       { new: true }
     );
