@@ -1,44 +1,32 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
-import useApiRequest from '../Hooks/useApiRequest';
 import axios from 'axios';
-import ProgressBar from '../utils/ProgressBar';
 import Loader from "../Loader"
 import { toast } from 'react-toastify';
 
 const UploadVideo = () => {
   const user = useSelector((state) => state.user.user);
-const[progress,setProgress] = useState(0)
-const [uploading, setUploading] = useState(localStorage.getItem('uploading') === 'true'); // Retrieve uploading state from localStorage
-const channelId = user.channel._id
-
+  const [uploading, setUploading] = useState(localStorage.getItem('uploading') === 'true'); // Retrieve uploading state from localStorage
+  const channelId = user.channel._id;
+  const Categories = ["All", "Music", "Funny", "Sports", "Movie", "News", "Study", "Cricket", "Kids", "Gaming"];
   const url = `http://localhost:8000/api/video/${channelId}`;
+  let toastId;
+
   const [formData, setFormData] = useState({
     title: '',
     description: '',
-    tags: [], // Ensure tags is always an array
+    category: "All",  // Default category is "All"
     video: null,
     thumbnail: null,
   });
 
-  useEffect(()=>{
-   localStorage.setItem("uploading",uploading.toString())
-  },[uploading])
+  useEffect(() => {
+    localStorage.setItem("uploading", uploading.toString());
+  }, [uploading]);
 
-  useEffect(()=>{
-   console.log(progress);
-   
-  },[progress])
   const handleChange = (e) => {
     const { name, value, files } = e.target;
-
-    if (name === 'tags') {
-      // Ensure the value for tags is split into an array
-      setFormData((prev) => ({
-        ...prev,
-        tags: value ? value.split(',').map((tag) => tag.trim()) : [], // Handle empty value as an empty array
-      }));
-    } else if (name === 'video' || name === 'thumbnail') {
+    if (name === 'video' || name === 'thumbnail') {
       // Handle file input for video and thumbnail
       setFormData((prev) => ({
         ...prev,
@@ -71,50 +59,49 @@ const channelId = user.channel._id
     // Create a FormData object for submitting the form
     const formToSubmit = new FormData();
     formToSubmit.append('title', formData.title);
-    formToSubmit.append('description', formData.description);
-  
-    // Send tags as an array
-    formData.tags.forEach((tag) => formToSubmit.append('tags[]', tag)); // Appending each tag separately
-  
+    formToSubmit.append('description', formData.description);  
+    formToSubmit.append('category', formData.category);  // Include category in the submission
     formToSubmit.append('video', formData.video);
     formToSubmit.append('thumbnail', formData.thumbnail);
   
     try {
       setUploading(true);
+       toastId = toast.loading("Uploading video...");
       const response = await axios.post(url, formToSubmit, {
         withCredentials: true,
         headers: {
           'Content-Type': 'multipart/form-data',
         },
-        onUploadProgress: (progressEvent) => {
-          const percentage = Math.round((progressEvent.loaded * 100) / progressEvent.total);
-          if (percentage < 100) {
-            setProgress(percentage);
-          }
-          console.log(`Uploading: ${percentage}%`);  // Debugging progress
-        },
       });
   
       if (response && response.data) {
-        console.log(response.data);
+        localStorage.setItem("uploading", "false");
+        setUploading(false)
+       toast.dismiss(toastId)
+        toast.success("video upload successfdully")
       }
   
     } catch (error) {
       console.error(error);
+      toast.update(toastId, {
+        render: "Upload failed. Please try again.",
+        type: "error",
+        autoClose: 3000,
+        style: {
+          backgroundColor: "#f44336", // Error background color
+          color: "white",              // Text color
+          fontWeight: "bold",          // Font weight
+          padding: "15px 30px",        // Padding around the toast
+        },
+      });
+
     } finally {
-      setUploading(false);
-      toast.success("video uploaded successfully")
-      localStorage.setItem("uploading","false")
-      setProgress(0); // Reset progress after upload
+      setUploading(false)
+      localStorage.setItem("uploading", "false")
     }
   };
 
- 
-  
-
   return ( 
-
-    <>
     <section className="w-[82%] h-screen bg-zinc-700 p-10">
       <div className="max-w-xl relative mx-auto bg-white p-8 rounded-lg shadow-md">
         <h2 className="text-3xl font-bold text-center mb-6">Upload Your Video</h2>
@@ -152,20 +139,23 @@ const channelId = user.channel._id
             />
           </div>
 
-          {/* Tags Input */}
+          {/* Category Dropdown */}
           <div className="mb-4">
-            <label className="block text-sm font-semibold mb-2" htmlFor="tags">
-              Tags (comma separated)
+            <label className="block text-sm font-semibold mb-2" htmlFor="category">
+              Category
             </label>
-            <input
-              type="text"
-              name="tags"
-              id="tags"
-              placeholder="Add tags (e.g., coding, tutorial)"
-              value={formData.tags ? formData.tags.join(', ') : ''} // Check if tags is an array before using join
+            <select
+              name="category"
+              value={formData.category}  // Bind the selected category to formData
               onChange={handleChange}
               className="w-full p-3 bg-gray-100 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-            />
+            >
+              {Categories.map((category, index) => (
+                <option value={category} key={index}>
+                  {category}
+                </option>
+              ))}
+            </select>
           </div>
 
           {/* Video File Input */}
@@ -200,19 +190,13 @@ const channelId = user.channel._id
             />
           </div>
 
-                    {/* Progress Bar */}
-                    {uploading && (
-            <div className="mb-4">
-              <ProgressBar progress={progress} /> {/* A progress bar component */}
-              <p>{progress}% uploading...</p>
-            </div>
-          )}
-
+        
+         
 
           {/* Submit Button */}
           <div className="flex justify-center">
             <button
-            disabled={uploading}
+              disabled={uploading}
               type="submit"
               className="px-6 py-3 bg-blue-500 text-white font-semibold rounded-md hover:bg-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
             >
@@ -221,17 +205,14 @@ const channelId = user.channel._id
           </div>
         </form>
 
-         {   uploading &&  <div className='w-full absolute top-0 left-0 h-full bg-transparent backdrop-blur-xs flex justify-center items-center'>
-              <Loader></Loader>
-            </div>
-         }
+        {uploading && (
+          <div className="w-full absolute top-0 left-0 h-full bg-transparent backdrop-blur-xs flex justify-center items-center">
+            <Loader />
+          </div>
+        )}
 
       </div>
-
-    
     </section>
-   
-    </>
   );
 };
 

@@ -1,5 +1,6 @@
 import React from 'react'
 import { Link } from 'react-router-dom';
+import timeAgo from '../../Helper/CalculateTime';
 const VideoCard2 = ({video}) => {
 
   
@@ -16,6 +17,7 @@ const VideoCard2 = ({video}) => {
          </Link>
 
 
+
           <div className="flex w-84 items-center gap-2">
 
            <Link to={`/channel/${video.publishedBy._id}`} >
@@ -30,12 +32,12 @@ const VideoCard2 = ({video}) => {
               {video.title}
               </p>
               <p className="text-gray-600">{video.publishedBy.channelName}</p>
-              <p className="text-gray-500 text-[15px]">{video.views} views . 5 years ago</p>
+              <p className="text-gray-500 text-[15px]">{video.views} views {timeAgo(video.createdAt)}</p>
              </div>
             </div>
             
             <div className=" text-white w-[15%] self-start">
-            <i class="fa-solid fa-lg fa-ellipsis-vertical"></i>
+            <i className="fa-solid fa-lg fa-ellipsis-vertical"></i>
             </div>
 
           </div>

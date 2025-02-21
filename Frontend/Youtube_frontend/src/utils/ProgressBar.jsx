@@ -1,14 +1,10 @@
-const ProgressBar = ({ progress }) => {
+import Loader from "../Loader";
+
+const ProgressBar = ({ show }) => {
+
     return (
-      <div style={{ width: '100%', backgroundColor: '#f3f3f3', borderRadius: '5px' }}>
-        <div
-          style={{
-            width: `${progress}%`,
-            height: '20px',
-            backgroundColor: 'green',
-            borderRadius: '5px',
-          }}
-        />
+      <div className={`p-3 flex  ${show} right-1 bg-white fixed top-3 z-50 justify-center items-center`}>
+        <h1 className="text-orange-400 flex gap-5 font-semibold">Video Uploading... <Loader/></h1>
       </div>
     );
   };

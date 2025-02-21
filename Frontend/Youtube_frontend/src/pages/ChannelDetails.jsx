@@ -11,15 +11,24 @@ const ChannelDetails = () => {
   const {channelId}= useParams()
    const url = `http://localhost:8000/api/channel/${channelId}`
     const user = useSelector((state)=>state.user.user);
+     const[isOwner,setIsOwner]  = useState(false)
 
-     const owner = channel?.owner.toString() ===  user && user._id.toString()
+
+    useEffect(()=>{
+     if( user && channel){  
+       const  owner =  channel._id === user.channel
+       console.log(owner);
+          setIsOwner(owner)
+     }
+    },[channel])
       
   useEffect(()=>{
    async function fetchData(){
+    console.log(url);
+    
     const response =   await axios.get(url,{withCredentials:true})
 
       if(response && response.data){
-        console.log(response.data.data[0]);
         setChannel(response.data.data[0])
         setVideos(response.data.data[0].ChannelVideos )
       }
@@ -29,10 +38,8 @@ const ChannelDetails = () => {
 
 
   async function handleDeleteVideo(e,video){
-    
     e.preventDefault()
-    
-
+  
    try {
     const url = `http://localhost:8000/api/video/${ video && video._id}`
     console.log(url);
@@ -63,7 +70,7 @@ const ChannelDetails = () => {
 
 
       <section className=' h-[21%] w-[90%] flex gap-2 '>
-        <div className=' h-full w-[16%] rounded-full '>
+        <div className=' h-full w-[16%]  rounded-full '>
         <img src={channel && channel.profile}
         className='w-full h-full rounded-full object-cover'
         alt="" />
@@ -73,8 +80,8 @@ const ChannelDetails = () => {
              <h1>@devabhai11m . <span className='text-gray-400'>6.3M Subscribers . {videos.length} Videos</span></h1>
               <p>{channel && channel.description }
               </p>
-              <button className={`p-2 rounded-4xl ${owner?"hidden":"block"} bg-white text-black w-32`}>Subscribe</button>
-              <div className={`${owner?"block":"hidden"}  flex gap-4`} >
+              <button className={`p-2 rounded-4xl ${isOwner?"hidden":"block"} bg-white text-black w-32`}>Subscribe</button>
+              <div className={`${isOwner?"block":"hidden"}  flex gap-4`} >
               <button className='p-2 px-4 rounded-4xl  bg-zinc-700 hover:bg-zinc-600 '>Manage Videos</button>
               <button className='p-2 px-4 rounded-4xl bg-zinc-700 hover:bg-zinc-600 '>Customize channel</button>
               </div>

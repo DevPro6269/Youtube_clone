@@ -8,10 +8,10 @@ const Sidebar = ({position="relative"}) => {
   return (
     <div className={`bg-black h-screen w-[18%] z-10 ${position}  overflow-auto text-white  px-4 p-2`}>
       <div className="w-fit hidden">
-        <i class="fa-solid fa-bars fa-xl" style={{ color: "#ffffff" }}></i>
+        <i className="fa-solid fa-bars fa-xl" style={{ color: "#ffffff" }}></i>
         &nbsp; &nbsp; &nbsp;
         <i
-          class="fa-brands fa-youtube  fa-2xl"
+          className="fa-brands fa-youtube  fa-2xl"
           style={{ color: "#dd1313" }}
         ></i>
         <span className="text-white text-xl">
@@ -24,22 +24,22 @@ const Sidebar = ({position="relative"}) => {
         <Link to={"/"}>
           <Options
             icon={
-              <i class="fa-solid fa-house" style={{ color: "#ffffff" }}></i>
+              <i className="fa-solid fa-house" style={{ color: "#ffffff" }}></i>
             }
             text={"Home"}
           />
         </Link>
 
         <Options
-          icon={<i class="fa-solid fa-house" style={{ color: "#ffffff" }}></i>}
+          icon={<i className="fa-solid fa-house" style={{ color: "#ffffff" }}></i>}
           text={"Shorts"}
         />
 
         <Options
           icon={
             <i
-              class="fa-brands fa-square-youtube fa-lg"
-              style={{ color: "#dee4ed;" }}
+              className="fa-brands fa-square-youtube fa-lg"
+              style={{ color: "#dee4ed" }}
             ></i>
           }
           text={"Subscription"}
@@ -53,12 +53,12 @@ const Sidebar = ({position="relative"}) => {
       <div className="flex mt-2 flex-col">
         <Options
           icon={
-            <i class="fa-solid fa-user fa-lg" style={{ color: "#fafcff" }}></i>
+            <i className="fa-solid fa-user fa-lg" style={{ color: "#fafcff" }}></i>
           }
           text={"You"}
         />
         <Options
-          icon={<i class="fa-solid fa-clock-rotate-left"></i>}
+          icon={<i className="fa-solid fa-clock-rotate-left"></i>}
           text={"History"}
         />
       </div>
@@ -75,7 +75,7 @@ const Sidebar = ({position="relative"}) => {
             <div className="flex gap-6 items-center font-light">
               <div className="flex p-2 outline h-8 items-center gap-3 outline-blue-400 rounded-full">
                 {/* <div className="outline-blue-500 p-1 outline rounded-full flex justify-center items-center"> */}
-                <i class="fa-regular fa-xs fa-user"></i> {/* </div> */}
+                <i className="fa-regular fa-xs fa-user"></i> {/* </div> */}
                 <span className="text-blue-500">Sign in</span>
               </div>
             </div>
@@ -91,32 +91,32 @@ const Sidebar = ({position="relative"}) => {
         <h1 className="p-2">Explore</h1>
 
         <Options
-          icon={<i class="fa-solid fa-lg fa-fire"></i>}
+          icon={<i className="fa-solid fa-lg fa-fire"></i>}
           text={"Trending"}
         />
 
         <Options
-          icon={<i class="fa-solid fa-lg fa-music"></i>}
+          icon={<i className="fa-solid fa-lg fa-music"></i>}
           text={"Music"}
         />
 
         <Options
-          icon={<i class="fa-regular fa-lg fa-heart"></i>}
+          icon={<i className="fa-regular fa-lg fa-heart"></i>}
           text={"Live"}
         />
 
         <Options
-          icon={<i class="fa-solid fa-lg fa-gamepad"></i>}
+          icon={<i className="fa-solid fa-lg fa-gamepad"></i>}
           text={"Gaming"}
         />
 
         <Options
-          icon={<i class="fa-solid fa-lg fa-clapperboard"></i>}
+          icon={<i className="fa-solid fa-lg fa-clapperboard"></i>}
           text={"Movie"}
         />
 
         <Options
-          icon={<i class="fa-solid fa-lg fa-trophy"></i>}
+          icon={<i className="fa-solid fa-lg fa-trophy"></i>}
           text={"Sports"}
         />
       </div>
@@ -126,22 +126,22 @@ const Sidebar = ({position="relative"}) => {
 
       <div className="flex mt-2 flex-col">
         <Options
-          icon={<i class="fa-solid fa-lg fa-gear"></i>}
+          icon={<i className="fa-solid fa-lg fa-gear"></i>}
           text={"Settings"}
         />
 
         <Options
-          icon={<i class="fa-solid fa-lg fa-flag"></i>}
+          icon={<i className="fa-solid fa-lg fa-flag"></i>}
           text={"Report history"}
         />
 
         <Options
-          icon={<i class="fa-solid fa-lg fa-circle-info"></i>}
+          icon={<i className="fa-solid fa-lg fa-circle-info"></i>}
           text={"Help"}
         />
 
         <Options
-          icon={<i class="fa-regular fa-lg fa-message"></i>}
+          icon={<i className="fa-regular fa-lg fa-message"></i>}
           text={"Send feedback"}
         />
       </div>

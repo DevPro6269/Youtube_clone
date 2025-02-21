@@ -10,11 +10,9 @@ const Profile = () => {
    const dispatch = useDispatch();
    const navigate = useNavigate();
   const url = "http://localhost:8000/api/user/logout"  
-
  const userLoggedIn = useSelector((state)=>state.user.isLoggedIn);
 const user = useSelector((state)=>state.user.user);
-const channelId = user.channel._id
-
+const channelId = user?.channel?._id
 
 console.log(channelId);
 
@@ -28,12 +26,13 @@ if(response && response.data){
         toast.success("user log out successfully !!!!")
         navigate("/")
     }
-    console.log(response.data);   
+   
 }
 } catch (error) {
     console.log(error)
 }
 }
+
 
 
 
@@ -52,7 +51,7 @@ if(response && response.data){
     <h1>{user && user.firstName +" "+ user.lastName }</h1>
     <h2>@{ user && user.channel && user.channel.channelName}</h2>
  {
-    channelId?  <Link to={`/channel/${channelId}`} > <p className='text-blue-500 mt-2'>view your channel</p></Link>:
+    user?.channel?  <Link to={`/channel/${channelId}`} > <p className='text-blue-500 mt-2'>view your channel</p></Link>:
     <Link to={"/youtube/channel/new"} > <p className='text-blue-500 mt-2'>Create your channel</p></Link>
  }
 </div>
@@ -66,7 +65,7 @@ if(response && response.data){
    <div className='flex flex-col gap-1'>
    <div className='flex h-10 w-72  hover:bg-zinc-700 p-2 items-center gap-2'>
     <div className='p-1'>
-    <i class="fa-brands fa-lg fa-google"></i>
+    <i className="fa-brands fa-lg fa-google"></i>
     </div>
     <div>
     <h1 className='font-light'>Google Account</h1>
@@ -74,7 +73,7 @@ if(response && response.data){
     </div>
    <div onClick={handleClick} className='flex h-10 w-72   hover:bg-zinc-700 p-2  items-center gap-2'>
     <div className='p-1'>
-    <i class="fa-solid fa-right-from-bracket"></i>
+    <i className="fa-solid fa-right-from-bracket"></i>
     </div>
     <div>
     <h1 className='font-light'>Sign out</h1>
@@ -83,7 +82,7 @@ if(response && response.data){
    
     <div className='flex h-10 w-72   hover:bg-zinc-700 p-2  items-center gap-2'>
     <div className='p-1'>
-    <i class="fa-solid fa-user-pen"></i>
+    <i className="fa-solid fa-user-pen"></i>
     </div>
     <div>
     <h1 className='font-light'>swicth account</h1>
@@ -96,7 +95,7 @@ if(response && response.data){
 <div className='flex flex-col gap-1'>
    <div className='flex h-10 w-72  hover:bg-zinc-700 p-2 items-center gap-2'>
     <div className='p-1'>
-    <i class="fa-solid fa-chart-simple"></i>
+    <i className="fa-solid fa-chart-simple"></i>
     </div>
     <div>
     <h1 className='font-light'>Youtube Studio</h1>
@@ -104,7 +103,7 @@ if(response && response.data){
     </div>
     <div className='flex h-10 w-72   hover:bg-zinc-700 p-2  items-center gap-2'>
     <div className='p-1'>
-    <i class="fa-solid fa-dollar-sign"></i>
+    <i className="fa-solid fa-dollar-sign"></i>
     </div>
     <div>
     <h1 className='font-light'>Purchase and membership</h1>
@@ -117,7 +116,7 @@ if(response && response.data){
    <div className='flex flex-col gap-1'>
    <div className='flex h-10 w-72  hover:bg-zinc-700 p-2 items-center gap-2'>
     <div className='p-1'>
-    <i class="fa-solid fa-shield-halved"></i>
+    <i className="fa-solid fa-shield-halved"></i>
     </div>
     <div>
     <h1 className='font-light'>Your data in youtube</h1>
@@ -125,7 +124,7 @@ if(response && response.data){
     </div>
     <div className='flex h-10 w-72   hover:bg-zinc-700 p-2  items-center gap-2'>
     <div className='p-1'>
-    <i class="fa-solid fa-key"></i>
+    <i className="fa-solid fa-key"></i>
     </div>
     <div>
     <h1 className='font-light'>Restricated Mode : Off </h1>
@@ -134,7 +133,7 @@ if(response && response.data){
 
     <div className='flex h-10 w-72  hover:bg-zinc-700 p-2 items-center gap-2'>
     <div className='p-1'>
-    <i class="fa-solid fa-moon"></i>
+    <i className="fa-solid fa-moon"></i>
     </div>
     <div>
     <h1 className='font-light'>Appearane: dark</h1>
@@ -143,7 +142,7 @@ if(response && response.data){
 
     <div className='flex h-10 w-72  hover:bg-zinc-700 p-2 items-center gap-2'>
     <div className='p-1'>
-    <i class="fa-solid fa-earth-americas"></i>
+    <i className="fa-solid fa-earth-americas"></i>
     </div>
     <div>
     <h1 className='font-light'>Location: India</h1>
@@ -152,7 +151,7 @@ if(response && response.data){
 
     <div className='flex h-10 w-72  hover:bg-zinc-700 p-2 items-center gap-2'>
     <div className='p-1'>
-    <i class="fa-solid fa-keyboard"></i>
+    <i className="fa-solid fa-keyboard"></i>
     </div>
     <div>
     <h1 className='font-light'>Keyboard shortcuts Studio</h1>
@@ -163,7 +162,7 @@ if(response && response.data){
   
     <div className='flex h-10 w-72  hover:bg-zinc-700 p-2 items-center gap-2'>
     <div className='p-1'>
-    <i class="fa-solid fa-gear"></i>
+    <i className="fa-solid fa-gear"></i>
     </div>
     <div>
     <h1 className='font-light'> Settings</h1>
@@ -178,7 +177,7 @@ if(response && response.data){
     <div className='flex flex-col gap-1'>
    <div className='flex h-10 w-72  hover:bg-zinc-700 p-2 items-center gap-2'>
     <div className='p-1'>
-    <i class="fa-solid fa-circle-info"></i>
+    <i className="fa-solid fa-circle-info"></i>
     </div>
     <div>
     <h1 className='font-light'> Help</h1>
@@ -186,7 +185,7 @@ if(response && response.data){
     </div>
     <div className='flex h-10 w-72   hover:bg-zinc-700 p-2  items-center gap-2'>
     <div className='p-1'>
-    <i class="fa-solid fa-message"></i> 
+    <i className="fa-solid fa-message"></i> 
    </div>
     <div>
     <h1 className='font-light'>Send feedback</h1>

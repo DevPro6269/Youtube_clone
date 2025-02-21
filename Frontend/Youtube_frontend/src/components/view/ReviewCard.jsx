@@ -74,7 +74,7 @@ function handleEditClick(){
       }
     </div>
     <div onClick={()=>setShowMenu((prev)=>!prev)} className='w-[15%] flex justify-end'>
-    <i class="fa-solid fa-lg fa-ellipsis-vertical  hover:bg-zinc-600"></i>
+    <i className="fa-solid fa-lg fa-ellipsis-vertical  hover:bg-zinc-600"></i>
     </div>
 
      <div  className={`bg-zinc-700 absolute ${showMenu?"block":"hidden"} right-10 `}>

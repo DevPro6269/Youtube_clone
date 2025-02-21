@@ -18,7 +18,7 @@ const SideVideoCard = ({src,title,channelName,views}) => {
        </div>
 
        <div className='p-2'>
-       <i class="fa-solid fa-lg fa-ellipsis-vertical"></i>
+       <i className="fa-solid fa-lg fa-ellipsis-vertical"></i>
        </div>
     </div>
 </div>

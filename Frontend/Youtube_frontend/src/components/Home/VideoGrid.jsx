@@ -6,22 +6,30 @@ import Loader from "../../Loader";
 import { useOutletContext } from "react-router-dom";
 
 export const VideoGrid = () => {
-  const url = "http://localhost:8000/api/video";
+  
   const [videos, setVideos] = useState([]);
   const [isLoading, setLoading] = useState(false);
   const { searchQuery } = useOutletContext(); // Get search query from Layout
-  const [filteredVideos, setFilteredVideos] = useState([]); 
-
+  const [activeCategory, setActiveCategory] = useState("All");
+  const[sortBy,setSortBy] = useState("")
+  const url = `http://localhost:8000/api/video`;
   // Fetch videos on initial load
   useEffect(() => {
-    const fetchVideos = async () => {
+  const queryParams = {
+    category:activeCategory,
+    title:searchQuery||undefined,
+    sortBy: sortBy || undefined, 
+  }
+ const fetchVideos = async () => {     
       try {
         setLoading(true);
-        const response = await axios.get(url);
+        const response = await axios.get(url,{
+          params:queryParams
+        });
 
         if (response && response.data) {
           setVideos(response.data.data);
-          setFilteredVideos(response.data.data); // Set the videos initially
+           // Set the videos initially
         }
       } catch (error) {
         console.error(error);
@@ -31,23 +39,13 @@ export const VideoGrid = () => {
     };
 
     fetchVideos();
-  }, []); // Empty dependency array to run the fetch only once
+  }, [activeCategory,searchQuery]); // Empty dependency array to run the fetch only once
 
-  // Filter videos based on search query
-  useEffect(() => {
-    const filterVideos = () => {
-      const filtered = videos.filter((video) =>
-        video.title.toLowerCase().includes(searchQuery.toLowerCase()) // Case-insensitive search
-      );
-      setFilteredVideos(filtered);
-    };
 
-    if (searchQuery) {
-      filterVideos(); // Filter videos if there's a search query
-    } else {
-      setFilteredVideos(videos); // Show all videos when searchQuery is empty
-    }
-  }, [searchQuery, videos]); // Re-run filtering when searchQuery or videos change
+function handleCategoryChange(category){
+  setActiveCategory(category)
+}
+
 
   if (isLoading) {
     return (
@@ -59,10 +57,10 @@ export const VideoGrid = () => {
 
   return (
     <section className="bg-black gap-6 p-2 h-screen flex flex-col overflow-auto w-[82%]">
-      <CategoryBar />
+      <CategoryBar activeCategory={activeCategory} handleCategoryChange={handleCategoryChange} />
       <div className="flex gap-5 overflow-auto h-screen flex-wrap">
-        {filteredVideos.length > 0 ? (
-          filteredVideos.map((video, index) => (
+        {videos.length > 0 ? (
+          videos.map((video, index) => (
             <VideoCard2 key={index} video={video} />
           ))
         ) : (

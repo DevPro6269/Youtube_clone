@@ -35,7 +35,7 @@ const Rightside = () => {
 {
 
 videos && videos.map((video,index)=>{
-  return  <Link to={`/youtube/video/${video._id}`}>
+  return  <Link key={index} to={`/youtube/video/${video._id}`}>
    <SideVideoCard
   key={index}
   src={video.thumbnailUrl}

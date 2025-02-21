@@ -19,29 +19,28 @@ const Leftside = ({video}) => {
   
   const{data,loading,error} = useApiRequest(url,triggerRequest,isLikedByMe?"DELETE":"POST")
   
-useEffect(()=>{
-if(video.publishedBy){ 
-  const subscribeUrl = `http://localhost:8000/api/subscribe/${video.publishedBy}`
+// useEffect(()=>{
+// if(video.publishedBy){ 
+//   const subscribeUrl = `http://localhost:8000/api/subscribe/${video.publishedBy}`
   
-  async function fetchData(){
-    try {
-      const response = await axios.get(subscribeUrl,{withCredentials:true})
-      if((response && response.data)){
-        console.log(response.data)
-      }
-    } catch (error) {
-       console.log(error);  
-    }
-  }
-  fetchData()
-}
+//   async function fetchData(){
+//     try {
+//       const response = await axios.get(subscribeUrl,{withCredentials:true})
+//       if((response && response.data)){
+//         console.log(response.data)
+//       }
+//     } catch (error) {
+//        console.log(error);  
+//     }
+//   }
+//   fetchData()
+// }
   
-},[video])
+// },[video])
 
 
   useEffect(()=>{
    if(video._id){
-    
     
      const url = `http://localhost:8000/api/like/${video._id}`
      async function fetchData(){
@@ -158,15 +157,18 @@ console.log(video);
      <section className='flex justify-between'>
           <div className='flex gap-3 items-center '>
              <div className='h-12 w-12 rounded-full bg-amber-300'>
-              <img src={video && video.Channel?.length==1 && video.Channel[0].profile} className='h-full rounded-full w-full' alt="" />
-             </div>
+             <img
+  src={video && video.Channel?.length === 1 ? video.Channel[0].profile : undefined}
+  className="h-full rounded-full w-full"
+  alt="Channel Profile"
+/>             </div>
              <div className='flex flex-col'>
               <h1 className='text-xl'>{video && video.Channel?.length==1 && video.Channel[0].channelName}</h1>
               <p className='text-gray-500'>57.4k subscribers</p>
              </div>
              <div onClick={()=>setIsSubscribed((prev)=>!prev)}>
               {
-                isSubscribed?  <button className='p-2 rounded-full bg-zinc-700 px-4'><i class="fa-regular fa-bell"></i>  Subscribed</button>:
+                isSubscribed?  <button className='p-2 rounded-full bg-zinc-700 px-4'><i className="fa-regular fa-bell"></i>  Subscribed</button>:
                 <button className='p-2 rounded-full bg-white text-black'>Subscribe</button>
               }
              </div>
@@ -178,7 +180,7 @@ console.log(video);
             <div className=' bg-zinc-800 rounded-full flex'>
            <div onClick={handleClick} className='p-2 flex items-center gap-1 hover:bg-zinc-500 rounded-l-full'>
           {
-            isLikedByMe?<i class="fa-solid  fa-thumbs-up p-1"></i>:<i class="fa-regular  fa-thumbs-up p-1"></i>
+            isLikedByMe?<i className="fa-solid  fa-thumbs-up p-1"></i>:<i className="fa-regular  fa-thumbs-up p-1"></i>
           }
             
           
@@ -188,7 +190,7 @@ console.log(video);
 
            <div className='w-[2px] h-12 bg-gray-700'></div>
            <div className=' px-4 flex items-center gap-1 hover:bg-zinc-500 rounded-r-full'>
-           <i class="fa-regular  fa-thumbs-down"></i>
+           <i className="fa-regular  fa-thumbs-down"></i>
            </div>
             </div>
 
@@ -196,18 +198,18 @@ console.log(video);
 
 
             <div className='flex items-center hover:bg-zinc-600 h-11 rounded-3xl gap-2 bg-zinc-800  px-3'>
-            <i class="fa-solid fa-share"></i>
+            <i className="fa-solid fa-share"></i>
           <h1>Share</h1>
             </div>
 
             <div className='flex items-center h-11 hover:bg-zinc-600 rounded-3xl gap-2 bg-zinc-800  px-3'>
-            <i class="fa-solid fa-download"></i>
+            <i className="fa-solid fa-download"></i>
           <h1>Download</h1>
             </div>
 
 
             <div className='flex items-center h-10 w-10 hover:bg-zinc-600 justify-center rounded-full gap-2 bg-zinc-800  p-2'>
-            <i class="fa-solid fa-ellipsis"></i>  
+            <i className="fa-solid fa-ellipsis"></i>  
             </div>
           </div>
 
@@ -234,7 +236,7 @@ console.log(video);
               </div>
 
               <div className='flex gap-4 items-center'>
-              <i class="fa-solid fa-lg fa-sort"></i>
+              <i className="fa-solid fa-lg fa-sort"></i>
                 <p>Sort</p>
               </div>
               </div>

@@ -49,7 +49,7 @@ function handleDelete(e){
             </div>
 
             <div onClick={()=>setShowMenu((prev)=>!prev)} className='mt-2'>
-            <i class="fa-solid fa-lg fa-ellipsis-vertical"></i>
+            <i className="fa-solid fa-lg fa-ellipsis-vertical"></i>
             </div>
         </div>
 
