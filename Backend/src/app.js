@@ -12,7 +12,7 @@ import cors from "cors"
 const app = express();
 
 const corsOptions = {
-    origin: 'http://localhost:5173', // Allow your frontend URL (replace with your frontend URL)
+    origin: 'https://videozilla.netlify.app/', // Allow your frontend URL (replace with your frontend URL)
     methods: ['GET', 'POST', 'PUT', 'DELETE'], // Specify allowed methods
     allowedHeaders: ['Content-Type', 'Authorization'], // Allowed headers
     credentials: true, // Enable cookies and other credentials
