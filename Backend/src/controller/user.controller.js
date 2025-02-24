@@ -94,10 +94,11 @@ export async function verifyOtp(req, res) {
     // Send the token in an HTTP-only cookie
     res.cookie("accessToken", token, {
       httpOnly: true,
-      maxAge: 3600000, // Token expiration time in ms (1 hour)
-      secure: process.env.NODE_ENV === 'production', // Ensure secure cookies in production
-      sameSite: "none", // Prevent CSRF attacks
+      secure: true,  // Enforce cookie over HTTPS
+      maxAge: 3600000,
+      sameSite: "None", // Ensure cross-origin requests are allowed
     });
+    
 
     // Remove OTP from store after successful user creation
     delete otpStore[email];
@@ -134,10 +135,11 @@ export async function login(req, res) {
   // Send the token in an HTTP-only cookie
   res.cookie("accessToken", token, {
     httpOnly: true,
-    secure: process.env.NODE_ENV === 'production', // Ensure secure cookies in production
-    maxAge: 3600000, // Token expiration time in ms (1 hour)
-    sameSite: "none", // Prevent CSRF attacks
+    secure: true,  // Enforce cookie over HTTPS
+    maxAge: 3600000,
+    sameSite: "None", // Ensure cross-origin requests are allowed
   });
+  
 
   user.password = undefined; // Don't send the password in the response
 
