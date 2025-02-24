@@ -96,7 +96,7 @@ export async function verifyOtp(req, res) {
       httpOnly: true,
       maxAge: 3600000, // Token expiration time in ms (1 hour)
       secure: process.env.NODE_ENV === 'production', // Ensure secure cookies in production
-      sameSite: "Strict", // Prevent CSRF attacks
+      sameSite: "none", // Prevent CSRF attacks
     });
 
     // Remove OTP from store after successful user creation
@@ -136,7 +136,7 @@ export async function login(req, res) {
     httpOnly: true,
     secure: process.env.NODE_ENV === 'production', // Ensure secure cookies in production
     maxAge: 3600000, // Token expiration time in ms (1 hour)
-    sameSite: "Strict", // Prevent CSRF attacks
+    sameSite: "none", // Prevent CSRF attacks
   });
 
   user.password = undefined; // Don't send the password in the response
@@ -157,7 +157,7 @@ export async function logout(req, res) {
   res.clearCookie("accessToken", {
     httpOnly: true,
     secure: process.env.NODE_ENV === "production", // Only set secure: true for production environment
-    sameSite: "Strict", // Added sameSite for additional security
+    sameSite: "none", // Added sameSite for additional security
   });
 
   // Return success message
