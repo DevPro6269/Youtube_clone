@@ -6,8 +6,6 @@ import store from '../src/Store/user.auth.js'; // Import your Redux store
 import UserPolling from './utils/UserPolling.jsx';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css'; // Important: Include this CSS for the toast styles
-import ProgressBar from './utils/ProgressBar.jsx';
-import Navbar from './components/Navbar.jsx';
 
 
 function App() {

@@ -32,7 +32,7 @@ function handleEditClick(){
  async function handleCommentClick(e){
   e.preventDefault()
  try {
-  const url = `http://localhost:8000/api/comment/${ comment&& comment._id}`
+  const url = `https://youtube-clone-4vf7.onrender.com/api/user/api/comment/${ comment&& comment._id}`
   const response = await axios.put(url,{message},{withCredentials:true})
   if(response && response.data.statusCode==200){
     setIsEditable(false)

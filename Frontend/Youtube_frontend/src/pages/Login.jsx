@@ -58,46 +58,6 @@ function handleChange(e){
 
  
   return (
-//     <section className='w-[82%] bg-zinc-600 flex justify-center pb-20 items-center h-screen '>
-        
-//         <div className='flex bg-white'>
-//        <form action="" onSubmit={handleSubmit} className='bg-white p-4  w-[50%]  flex items-center flex-col gap-8'>
-   
-//    <div className='self-center'>
-//     <h1 className='text-3xl'>Log in</h1>
-//    </div>
-
-//        <div>
-      
-//        <input type="email" onChange={handleChange} id='email' name='email' placeholder='email' className='border-b w-66 outline-none' />
-//        </div>
-
-//        <div>
-       
-//        <input type="password" onChange={handleChange} placeholder='password' name="password" className='border-b w-66 outline-none' id='Password' />
-//        </div>
-
-//         <div className='w-full justify-center flex'>
-//             <button disabled={loading} className='p-2 font-semibold w-[70%] border bg-blue-500 hover:bg-blue-400 text-white rounded-md'>Log in</button>
-//         </div>
-//         {
-//             error?<p className='text-red-600'>{error.message}</p>:""
-//         }
-
-//        <div>
-//         <p>Create a new account ? <a className='text-blue-500' href="">Sign up</a> </p>
-//        </div>
-
-//        </form>
-
-// <div className='w-[50%]'>
-//     <img src="https://res.cloudinary.com/dqlryem36/image/upload/v1739621912/search_x7gcgt.png" alt="" />
-// </div>
-
-//         </div>
-
-    
-//    </section>
 
 <section className="w-full flex justify-center items-center h-screen px-4 lg:w-[81%] bg-gray-900">
   <div className="flex w-full max-w-4xl p-6 mx-auto bg-white shadow-lg rounded-xl">

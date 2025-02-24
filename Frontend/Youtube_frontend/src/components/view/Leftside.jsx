@@ -9,7 +9,7 @@ const Leftside = ({video}) => {
   const[message,setMessage]=useState("")
   const[comments,setComments]=useState([])
   const[isSubscribed,setIsSubscribed]=useState(false)
-  const url = `http://localhost:8000/api/like/${video._id}`
+  const url = `https://youtube-clone-4vf7.onrender.com/api/like/${video._id}`
   const[isLikedByMe,setIsLikedByMe]=useState(false)
   const user = useSelector((state)=>state.user.user)
   const isLoggedIn = useSelector((state)=>state.user.isLoggedIn)
@@ -42,7 +42,7 @@ const Leftside = ({video}) => {
   useEffect(()=>{
    if(video._id){
     
-     const url = `http://localhost:8000/api/like/${video._id}`
+     const url = `https://youtube-clone-4vf7.onrender.com/api/like/${video._id}`
      async function fetchData(){
       try {
         const response = await axios.get(url,{withCredentials:true})
@@ -92,7 +92,7 @@ console.log(video);
     if(isLoggedIn){
 
       try {
-        const response = await axios.post(`http://localhost:8000/api/comment/${video._id}`,{message},{
+        const response = await axios.post(`https://youtube-clone-4vf7.onrender.com/api/comment/${video._id}`,{message},{
           withCredentials:true
         })
  
@@ -118,7 +118,7 @@ console.log(video);
   async function handleDeleteComment(e,comment){
     e.preventDefault()
    try {
-    const url = `http://localhost:8000/api/comment/${ comment&& comment._id}`
+    const url = `https://youtube-clone-4vf7.onrender.com/api/comment/${ comment&& comment._id}`
     const response = await axios.delete(url,{withCredentials:true})
     if(response && response.data.statusCode==200){
     const res =   comments.filter((c)=>c._id!==comment._id)
