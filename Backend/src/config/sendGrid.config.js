@@ -3,11 +3,7 @@ import crypto from "crypto"
 import dotenv from 'dotenv';
 
 dotenv.config();
-
-
 sgMail.setApiKey(process.env.SENDGRID_API_KEY); 
-
-
 
 const generateOTP = () => {
   return crypto.randomInt(1000, 9999); // Generates a 6-digit OTP
