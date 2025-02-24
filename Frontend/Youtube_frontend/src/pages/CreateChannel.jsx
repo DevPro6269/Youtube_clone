@@ -5,7 +5,7 @@ import useApiRequest from "../Hooks/useApiRequest";
 import axios from "axios";
 export const CreateChannel = () => {
   const [triggerRequest, setTriggerRequest] = useState(false);
-  const url = `http://localhost:8000/api/channel`
+  const url = `https://youtube-clone-4vf7.onrender.com/api/channel`
   
 
   const [formData, setFormData] = useState({

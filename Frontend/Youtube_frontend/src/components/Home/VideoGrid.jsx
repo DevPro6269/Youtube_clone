@@ -12,7 +12,7 @@ export const VideoGrid = () => {
   const { searchQuery } = useOutletContext(); // Get search query from Layout
   const [activeCategory, setActiveCategory] = useState("All");
   const[sortBy,setSortBy] = useState("")
-  const url = `http://localhost:8000/api/video`;
+  const url = `https://youtube-clone-4vf7.onrender.com/api/video`;
   // Fetch videos on initial load
   useEffect(() => {
   const queryParams = {

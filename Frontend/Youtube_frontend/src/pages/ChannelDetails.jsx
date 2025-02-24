@@ -9,7 +9,7 @@ const ChannelDetails = () => {
   const[videos,setVideos] = useState([])
   const [channel,setChannel]= useState(null)
   const {channelId}= useParams()
-   const url = `http://localhost:8000/api/channel/${channelId}`
+   const url = `https://youtube-clone-4vf7.onrender.com/api/channel/${channelId}`
     const user = useSelector((state)=>state.user.user);
      const[isOwner,setIsOwner]  = useState(false)
 
@@ -41,7 +41,7 @@ const ChannelDetails = () => {
     e.preventDefault()
   
    try {
-    const url = `http://localhost:8000/api/video/${ video && video._id}`
+    const url = `https://youtube-clone-4vf7.onrender.com/api/video/${ video && video._id}`
     console.log(url);
     
     const response = await axios.delete(url,{withCredentials:true})

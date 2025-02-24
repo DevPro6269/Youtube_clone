@@ -9,7 +9,7 @@ const UploadVideo = () => {
   const [uploading, setUploading] = useState(localStorage.getItem('uploading') === 'true'); // Retrieve uploading state from localStorage
   const channelId = user.channel._id;
   const Categories = ["All", "Music", "Funny", "Sports", "Movie", "News", "Study", "Cricket", "Kids", "Gaming"];
-  const url = `http://localhost:8000/api/video/${channelId}`;
+  const url = `https://youtube-clone-4vf7.onrender.com/api/video/${channelId}`;
   let toastId;
 
   const [formData, setFormData] = useState({

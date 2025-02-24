@@ -7,7 +7,7 @@ import { toast } from 'react-toastify';
 const Signup = () => {
   const [isVisible, setIsVisible] = useState(false);  
   const [triggerRequest, setTriggerRequest] = useState(false);
-  const url = "http://localhost:8000/api/user/signup";
+  const url = "https://youtube-clone-4vf7.onrender.com/api/user/signup";
   
   // State to hold form data
   const [formData, setFormData] = useState({

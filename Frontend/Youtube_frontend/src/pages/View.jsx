@@ -13,7 +13,7 @@ const View = () => {
   const[loading ,setLoading]=useState(false)
 const[video,setVideo]=useState({})
 const {videoId} = useParams()
-const url = `http://localhost:8000/api/video/${videoId}`
+const url = `https://youtube-clone-4vf7.onrender.com/api/video/${videoId}`
 const [isSideBarOpen,setIsSideBarOpen]=useState(false)
 const dispatch = useDispatch();
 

@@ -10,7 +10,7 @@ const VerifyOtp = ({ isVisible, setIsVisible,formData }) => {
     const navigate = useNavigate();
   const [otp, setOtp] = useState(["", "", "", ""]);
     const [triggerRequest, setTriggerRequest] = useState(false);
-    const url = "http://localhost:8000/api/verify";
+    const url = "https://youtube-clone-4vf7.onrender.com/api/verify";
 
     const { data, loading, error } = useApiRequest(url, triggerRequest, "POST", formData);
 
