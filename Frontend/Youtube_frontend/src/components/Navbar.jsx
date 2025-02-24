@@ -2,50 +2,57 @@ import React,{useState} from "react";
 import Profile from "./Profile";
 import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
+import {setHamburgerMenu} from "../Store/hamburgerMenuSlice.js"
 
 const Navbar = ({handleClick=null,searchQuery,onSearchChange}) => {
   const userLoggedIn = useSelector((state)=>state.user.isLoggedIn);
   const user = useSelector((state)=>state.user.user)
   const[profile,setProfile]=useState(false)
-  
+  const dispatch = useDispatch()
+ 
+  function hamburgerMenuClick(){
+     dispatch(setHamburgerMenu())
+  }
+
+
   return (
     <>
-      <nav className="bg-black gap-36 z-10 sticky top-0 items-center justify-between flex p-3">
-        <div onClick={handleClick} >
-          <i className="fa-solid fa-bars fa-xl" style={{ color: "#ffffff" }}></i>
-          &nbsp; &nbsp; &nbsp;
+      <nav className="bg-black   gap-3 z-50 w-screen   fixed top-0 items-center justify-between   flex p-2 ">
+        <div onClick={handleClick?handleClick:hamburgerMenuClick} className="flex h-[48px] w-[35%] md:w-[25%] items-center" >
+          <i className="fa-solid fa-bars  text-white md:fa-lg"></i>
+          &nbsp; &nbsp;  &nbsp; 
           <i
-            className="fa-brands fa-youtube  fa-2xl"
-            style={{ color: "#dd1313" }}
-          ></i>
-          <span className="text-white text-xl">
-            YouTube <sup className="text-gray-400 text-xs">IN</sup>{" "}
-          </span>
+            className="fa-brands text-red-500 fa-youtube text-lg md:fa-2xl"
+          ></i> &nbsp; 
+          <span className="text-white text-lg md:text-xl">
+            YouTube 
+          </span>{" "}
+          <sup className="text-gray-400 hidden  sm:block text-xs">IN</sup>
         </div>
 
         {/* // search bar  */}
 
-        <div className="flex gap-5">
-          <div className="flex items-center">
+        <div className="flex flex-1 w-[45%] md:w-[55%] md:gap-2">
+          <div className="flex w-full  items-center">
             <input
-              
               placeholder="search"
-              className="h-10 w-[500px] outline text-gray-500 rounded-l-full px-3 outline-gray-500"
+              className="md:h-10 h-6 w-full px-3 outline text-gray-500 rounded-l-full  outline-gray-500"
               type="text"
               name=""
               id=""
               value={searchQuery}
               onChange={(e)=>onSearchChange(e.target.value)}
             />
-            <div className="bg-slate-800 outline outline-gray-500 h-[40px] flex justify-center items-center rounded-r-full w-12">
+            <div className="bg-slate-800 outline p-1 outline-gray-500 h-6 md:h-[40px] flex justify-center items-center rounded-r-full w-6 md:w-12">
               <i
-                className="fa-solid fa-magnifying-glass fa-lg"
+                className="fa-solid fa-magnifying-glass fa-sm md:fa-lg"
                 style={{ color: "#ffffff" }}
               ></i>
             </div>
           </div>
 
-          <div className="flex justify-center items-center bg-slate-700 h-10 w-10 rounded-full">
+          <div className="md:flex justify-center hidden  items-center bg-slate-700 h-10 w-10 rounded-full">
             <i
               className="fa-solid fa-microphone fa-lg"
               style={{ color: "#fafafa" }}
@@ -54,47 +61,37 @@ const Navbar = ({handleClick=null,searchQuery,onSearchChange}) => {
         </div>
 
         {/* div for sign out users  */}
-        <div className={`flex gap-2 ${userLoggedIn?"hidden":"flex"}  items-center`}>
-          <div>
-            <i
-              className="fa-solid fa-ellipsis-vertical"
-              style={{ color: "#ffffff" }}
-            ></i>
-          </div>
-
+        <div className={`flex w-[20%] border-2 justify-end px-2 gap-2 ${userLoggedIn?"hidden":"flex"}  items-center`}>
          <Link to={"/sign-up"}>
-         <div className="flex p-2  outline h-10 gap-3 outline-blue-400 text-white rounded-full">
-            <div className="outline-blue-600 p-1 outline rounded-full flex justify-center items-center">
-              <i className="fa-regular text-blue-500 fa-user"></i>{" "}
-            </div>
-        
-          <span className="text-blue-500">Sign in</span>
-          </div>
+              <div className="flex md:p-2 w-fit outline p-1 items-center rounded-3xl md:gap-3 outline-blue-400">
+              <p className="hidden md:block"><i className="fa-regular  text-blue-400  md:block fa-xs fa-user"></i> </p>   {/* </div> */}
+                <p className="text-blue-500   text-[10px] md:text-base ">Sign in</p>
+              </div>
          </Link>
-
 
         </div>
 
 
         {/* div for sign in user  */}
 
-        <div className={`flex  ${userLoggedIn?"flex":"hidden"} gap-8 mr-2`}>
+        <div className={`flex w-[25%] justify-end text-white md:text-xl ${userLoggedIn?"flex":"hidden"}  gap-4 md:gap-8  md:mr-2`}>
             <Link to={"/video/new"} className="items-center flex" >
             <div className="flex justify-center items-center">
-             <i className="fa-solid fa-xl fa-video" style={{color: "#f5f7f9"}}>
+             <i className="fa-solid  fa-video" >
              </i>
              </div>
             </Link>
 
              <div className="flex justify-center items-center">
-             <i className="fa-regular fa-xl fa-bell" style={{color: "#ffffff"}}></i>
+             <i className="fa-regular  fa-bell" ></i>
              </div>
-             <div onClick={()=>{setProfile((prev)=>!prev)}} className="h-8 w-8  relative rounded-full">
+             <div onClick={()=>{setProfile((prev)=>!prev)}} className=" md:h-8 md:w-8 h-5 w-5 relative rounded-full">
             <img src={user && user.profile} className="h-full object-cover rounded-full w-full" alt="" />
              {profile?<Profile/>:""}
              </div>
         </div>
       </nav>
+     <br /> <br />
     </>
   );
 };

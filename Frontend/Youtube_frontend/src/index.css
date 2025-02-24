@@ -1,1 +1,12 @@
 @import "tailwindcss";
+
+
+@media (min-width:500px) {
+    #btn_div{
+       flex-direction: row;
+       width: fit-content;
+       font-size: 12px;
+       padding: 4px;
+       padding: 0 6px;
+    }
+}

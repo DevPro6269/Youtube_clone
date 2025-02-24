@@ -2,11 +2,22 @@ import React, { use } from "react";
 import { Link } from "react-router-dom";
 import Options from "./Sidebar/Options";
 import { useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
+import {setHamburgerMenu} from "../Store/hamburgerMenuSlice.js"
+
+
 const Sidebar = ({position="relative"}) => {
   const userLoggedIn = useSelector((state)=>state.user.isLoggedIn);
+  const isOpen = useSelector((state)=>state.hamburgerMenu.isOpen)
+  const dispatch = useDispatch()
 
+
+function handleClick(){
+dispatch(setHamburgerMenu())
+}
+ 
   return (
-    <div className={`bg-black h-screen w-[18%] z-10 ${position}  overflow-auto text-white  px-4 p-2`}>
+    <div onClick={handleClick} className={`bg-black max-h-screen  mt-8 overflow-scroll  left-0 top-6 pb-16   container ${isOpen?"block":"hidden"} fixed   z-40 w-fit   lg:block  text-white  px-4 p-2`}>
       <div className="w-fit hidden">
         <i className="fa-solid fa-bars fa-xl" style={{ color: "#ffffff" }}></i>
         &nbsp; &nbsp; &nbsp;
@@ -22,12 +33,14 @@ const Sidebar = ({position="relative"}) => {
       {/* ///////////////////    options ///// */}
       <div className="flex mt-2  flex-col">
         <Link to={"/"}>
-          <Options
-            icon={
-              <i className="fa-solid fa-house" style={{ color: "#ffffff" }}></i>
-            }
-            text={"Home"}
-          />
+
+
+        <div className="bg-zinc-800 md:w-48 w-40 rounded-2xl px-4 p-2">
+    <div className="flex gap-6 items-center font-light">
+    <i className="fa-solid fa-house" style={{ color: "#ffffff" }}></i>
+      <h1>Home</h1>
+    </div>
+  </div>
         </Link>
 
         <Options
@@ -145,7 +158,7 @@ const Sidebar = ({position="relative"}) => {
           text={"Send feedback"}
         />
       </div>
-
+    
       {/* end of div */}
     </div>
   );

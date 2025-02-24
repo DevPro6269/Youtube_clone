@@ -5,11 +5,11 @@ const VideoCard2 = ({video}) => {
 
   
   return (
-    <div className="flex relative flex-col gap-2">
+    <div className="flex w-[100%]  h-[100%] justify-center relative flex-col gap-2 md:gap-4">
          <Link to={`/youtube/video/${video._id}`}>
-         <div className="h-52 w-84">
+         <div className="   overflow-hidden  rounded-md w-[100%]">
             <img
-              className=" object-cover h-full w-full"
+              className="  h-full overflow-hidden rounded-md w-full"
               src={video.thumbnailUrl}
               alt=""
             />
@@ -18,21 +18,21 @@ const VideoCard2 = ({video}) => {
 
 
 
-          <div className="flex w-84 items-center gap-2">
+          <div className="flex w-[100%]  gap-2">
 
            <Link to={`/channel/${video.publishedBy._id}`} >
-           <div className="h-10 w-10 p-[2px] self-start  rounded-full">
+           <div className="md:h-10  h-7 w-7 md:w-10 p-[2px] self-start  rounded-full">
               <img src={video.publishedBy.profile} className='h-full w-full object-cover rounded-full' alt="" />
             </div>
            </Link>
 
             <div className="w-[70%]">
              <div className="flex flex-col">
-             <p className=" text-ellipsis text-white  w-full line-clamp-2">
+             <p className=" text-ellipsis text-white text-[10px] sm:text-sm md:text-base  w-full line-clamp-2">
               {video.title}
               </p>
-              <p className="text-gray-600">{video.publishedBy.channelName}</p>
-              <p className="text-gray-500 text-[15px]">{video.views} views {timeAgo(video.createdAt)}</p>
+              <p className="text-gray-600 sm:text-sm md:text-base text-[12px]">{video.publishedBy.channelName}</p>
+              <p className="text-gray-500 sm:text-xs md:text-sm text-[10px] ">{video.views} views {timeAgo(video.createdAt)}</p>
              </div>
             </div>
             
@@ -45,6 +45,9 @@ const VideoCard2 = ({video}) => {
 
 
         </div>
+
+  
+
   )
 }
 

@@ -33,26 +33,22 @@ if(response && response.data){
 }
 }
 
-
-
-
-
   return (
-   <div className='flex  absolute right-[2px] z-20  text-white rounded-xl top-10 bg-zinc-800 flex-col' >
+   <div className='flex  absolute right-[2px] z-50  max-h-screen pb-8 overflow-auto text-white rounded-xl top-10 bg-zinc-800 flex-col' >
     
 
     <div className='p-3 flex gap-3'>
 
-<div className='h-12 w-12 rounded-full bg-red-500'>
-    <img src={user && user.profile} alt="" />
+<div className='md:h-12 md:w-12 h-10 w-10 rounded-full bg-red-500'>
+    <img src={user && user.profile}  alt="" />
 </div>
 
 <div className='flex flex-col '>
     <h1>{user && user.firstName +" "+ user.lastName }</h1>
     <h2>@{ user && user.channel && user.channel.channelName}</h2>
  {
-    user?.channel?  <Link to={`/channel/${channelId}`} > <p className='text-blue-500 mt-2'>view your channel</p></Link>:
-    <Link to={"/youtube/channel/new"} > <p className='text-blue-500 mt-2'>Create your channel</p></Link>
+    user?.channel?  <Link to={`/channel/${channelId}`} > <p className='text-sm text-blue-500 mt-2'>view your channel</p></Link>:
+    <Link to={"/youtube/channel/new"} > <p className='text-blue-500 text-sm mt-2'>Create your channel</p></Link>
  }
 </div>
         
@@ -63,7 +59,7 @@ if(response && response.data){
     <div className=' h-[1px] bg-gray-500 my-2 w-full'></div>
 
    <div className='flex flex-col gap-1'>
-   <div className='flex h-10 w-72  hover:bg-zinc-700 p-2 items-center gap-2'>
+   <div className='flex md:h-10 h-8 md:w-72 w-52 text-sm  hover:bg-zinc-700 p-2 items-center gap-2'>
     <div className='p-1'>
     <i className="fa-brands fa-lg fa-google"></i>
     </div>
@@ -71,7 +67,7 @@ if(response && response.data){
     <h1 className='font-light'>Google Account</h1>
     </div>
     </div>
-   <div onClick={handleClick} className='flex h-10 w-72   hover:bg-zinc-700 p-2  items-center gap-2'>
+   <div onClick={handleClick} className='flex md:h-10 h-8 md:w-72 w-52 text-sm   hover:bg-zinc-700 p-2  items-center gap-2'>
     <div className='p-1'>
     <i className="fa-solid fa-right-from-bracket"></i>
     </div>
@@ -80,7 +76,7 @@ if(response && response.data){
     </div>
     </div>
    
-    <div className='flex h-10 w-72   hover:bg-zinc-700 p-2  items-center gap-2'>
+    <div className='flex md:h-10 h-8 md:w-72 w-52 text-sm   hover:bg-zinc-700 p-2  items-center gap-2'>
     <div className='p-1'>
     <i className="fa-solid fa-user-pen"></i>
     </div>
@@ -93,7 +89,7 @@ if(response && response.data){
 <div className=' h-[1px] bg-gray-500 my-2 w-full'></div>
 
 <div className='flex flex-col gap-1'>
-   <div className='flex h-10 w-72  hover:bg-zinc-700 p-2 items-center gap-2'>
+   <div className='flex md:h-10 h-8 md:w-72 w-52 text-sm  hover:bg-zinc-700 p-2 items-center gap-2'>
     <div className='p-1'>
     <i className="fa-solid fa-chart-simple"></i>
     </div>
@@ -101,7 +97,7 @@ if(response && response.data){
     <h1 className='font-light'>Youtube Studio</h1>
     </div>
     </div>
-    <div className='flex h-10 w-72   hover:bg-zinc-700 p-2  items-center gap-2'>
+    <div className='flex md:h-10 h-8 md:w-72 w-52 text-sm   hover:bg-zinc-700 p-2  items-center gap-2'>
     <div className='p-1'>
     <i className="fa-solid fa-dollar-sign"></i>
     </div>
@@ -114,7 +110,7 @@ if(response && response.data){
    <div className=' h-[1px] bg-gray-500 my-2 w-full'></div>
 
    <div className='flex flex-col gap-1'>
-   <div className='flex h-10 w-72  hover:bg-zinc-700 p-2 items-center gap-2'>
+   <div className='flex md:h-10 h-8 md:w-72 w-52 text-sm  hover:bg-zinc-700 p-2 items-center gap-2'>
     <div className='p-1'>
     <i className="fa-solid fa-shield-halved"></i>
     </div>
@@ -122,7 +118,7 @@ if(response && response.data){
     <h1 className='font-light'>Your data in youtube</h1>
     </div>
     </div>
-    <div className='flex h-10 w-72   hover:bg-zinc-700 p-2  items-center gap-2'>
+    <div className='flex md:h-10 h-8 md:w-72 w-52 text-sm   hover:bg-zinc-700 p-2  items-center gap-2'>
     <div className='p-1'>
     <i className="fa-solid fa-key"></i>
     </div>
@@ -131,7 +127,7 @@ if(response && response.data){
     </div>
     </div>
 
-    <div className='flex h-10 w-72  hover:bg-zinc-700 p-2 items-center gap-2'>
+    <div className='flex md:h-10 h-8 md:w-72 w-52 text-sm  hover:bg-zinc-700 p-2 items-center gap-2'>
     <div className='p-1'>
     <i className="fa-solid fa-moon"></i>
     </div>
@@ -140,7 +136,7 @@ if(response && response.data){
     </div>
     </div>
 
-    <div className='flex h-10 w-72  hover:bg-zinc-700 p-2 items-center gap-2'>
+    <div className='flex md:h-10 h-8 md:w-72 w-52 text-sm  hover:bg-zinc-700 p-2 items-center gap-2'>
     <div className='p-1'>
     <i className="fa-solid fa-earth-americas"></i>
     </div>
@@ -149,7 +145,7 @@ if(response && response.data){
     </div>
     </div>
 
-    <div className='flex h-10 w-72  hover:bg-zinc-700 p-2 items-center gap-2'>
+    <div className='flex md:h-10 h-8 md:w-72 w-52 text-sm  hover:bg-zinc-700 p-2 items-center gap-2'>
     <div className='p-1'>
     <i className="fa-solid fa-keyboard"></i>
     </div>
@@ -160,7 +156,7 @@ if(response && response.data){
 
     <div className=' h-[1px] bg-gray-500 my-2 w-full'></div>
   
-    <div className='flex h-10 w-72  hover:bg-zinc-700 p-2 items-center gap-2'>
+    <div className='flex md:h-10 h-8 md:w-72 w-52 text-sm  hover:bg-zinc-700 p-2 items-center gap-2'>
     <div className='p-1'>
     <i className="fa-solid fa-gear"></i>
     </div>
@@ -175,7 +171,7 @@ if(response && response.data){
 
 
     <div className='flex flex-col gap-1'>
-   <div className='flex h-10 w-72  hover:bg-zinc-700 p-2 items-center gap-2'>
+   <div className='flex md:h-10 h-8 md:w-72 w-52 text-sm  hover:bg-zinc-700 p-2 items-center gap-2'>
     <div className='p-1'>
     <i className="fa-solid fa-circle-info"></i>
     </div>
@@ -183,7 +179,7 @@ if(response && response.data){
     <h1 className='font-light'> Help</h1>
     </div>
     </div>
-    <div className='flex h-10 w-72   hover:bg-zinc-700 p-2  items-center gap-2'>
+    <div className='flex md:h-10 h-8 md:w-72 w-52 text-sm   hover:bg-zinc-700 p-2  items-center gap-2'>
     <div className='p-1'>
     <i className="fa-solid fa-message"></i> 
    </div>

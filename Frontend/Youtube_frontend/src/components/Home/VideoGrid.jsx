@@ -6,7 +6,7 @@ import Loader from "../../Loader";
 import { useOutletContext } from "react-router-dom";
 
 export const VideoGrid = () => {
-  
+  const[showMenu,setShowMenu]=useState(false);
   const [videos, setVideos] = useState([]);
   const [isLoading, setLoading] = useState(false);
   const { searchQuery } = useOutletContext(); // Get search query from Layout
@@ -56,9 +56,10 @@ function handleCategoryChange(category){
   }
 
   return (
-    <section className="bg-black gap-6 p-2 h-screen flex flex-col overflow-auto w-[82%]">
+    <section className="bg-black gap-6 p-2  relative flex flex-col overflow-auto w-screen xl:[84%] 2xl:w-[85%] lg:w-[82%]">
       <CategoryBar activeCategory={activeCategory} handleCategoryChange={handleCategoryChange} />
-      <div className="flex gap-5 overflow-auto h-screen flex-wrap">
+      <br />
+      <div className="grid gap-5 border-2 p-4 overflow-auto max-h-screen grid-cols-2  md:grid-cols-3">
         {videos.length > 0 ? (
           videos.map((video, index) => (
             <VideoCard2 key={index} video={video} />

@@ -6,7 +6,8 @@ import axios from 'axios'
 import Navbar from "../components/Navbar"
 import useApiRequest from '../Hooks/useApiRequest'
 import Sidebar from "../components/Sidebar"
-
+import { useDispatch } from 'react-redux'
+import { setHamburgerMenu } from '../Store/hamburgerMenuSlice'
 
 const View = () => {
   const[loading ,setLoading]=useState(false)
@@ -14,7 +15,7 @@ const[video,setVideo]=useState({})
 const {videoId} = useParams()
 const url = `http://localhost:8000/api/video/${videoId}`
 const [isSideBarOpen,setIsSideBarOpen]=useState(false)
-
+const dispatch = useDispatch();
 
 useEffect(()=>{
   const fetchVideos = async () => {
@@ -41,16 +42,27 @@ useEffect(()=>{
 
 function handleClick(){
    setIsSideBarOpen((prev)=>!prev)
+   dispatch(setHamburgerMenu())
 }
+
+
+// useEffect(()=>{
+//   if(isSideBarOpen){
+//     dispatch(setHamburgerMenu())
+//   }
+// },[setIsSideBarOpen])
+
+
 
 
   return (
    <>
    
    <Navbar handleClick={handleClick} />
-   <div className='p-2 flex bg-black text-white'>
+   <div className='p-2 flex flex-col md:flex-row bg-black text-white'>
    {isSideBarOpen && <Sidebar position='absolute' />}
-   <Leftside video={video} />
+   <Leftside video={video} /> 
+   <hr />
    <Rightside/>
    </div>
    </>

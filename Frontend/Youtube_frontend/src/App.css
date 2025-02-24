@@ -1,1 +1,7 @@
 @import "tailwindcss";
+body, html {
+    overflow-x: hidden; /* Prevent horizontal scrolling */
+    margin: 0; /* Ensure no extra margin */
+   background-color: black;
+  }
+  

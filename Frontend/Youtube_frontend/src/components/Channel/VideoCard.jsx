@@ -34,16 +34,16 @@ function handleDelete(e){
   return (
     <div className='flex relative flex-col gap-2'>
        <Link to={`/youtube/video/${video._id}`} >
-       <div className='h-40 w-60  bg-amber-300 rounded-lg'>
+       <div className='md:h-40 md:w-60  h-20 w-40   bg-amber-300 rounded-lg'>
          <img src={video && video.thumbnailUrl} className='h-full w-full rounded-lg object-cover' alt="" />
         </div>
        </Link>
 
-        <div className='flex gap-6'>
+        <div className='flex  md:gap-6'>
             <div className=''>
-             <p className='line-clamp-2 w-52'>{video.title}
+             <p className='line-clamp-2  text-xs  w-32 md:w-52'>{video.title}
              </p>
-             <p className='text-gray-600'>
+             <p className='text-gray-600 md:text-base text-xs'>
                 1.8k views . 2 days ago
              </p>
             </div>

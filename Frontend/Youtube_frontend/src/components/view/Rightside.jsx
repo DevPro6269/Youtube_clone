@@ -29,7 +29,7 @@ const Rightside = () => {
 
 
   return (
-    <div className="w-[30%] h-auto bg-black text-white">
+    <div className="md:w-[30%] flex-1 w-[100%] h-auto bg-black text-white">
       <div className="flex flex-col gap-2 p-1">
 
 {

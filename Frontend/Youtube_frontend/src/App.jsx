@@ -7,13 +7,14 @@ import UserPolling from './utils/UserPolling.jsx';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css'; // Important: Include this CSS for the toast styles
 import ProgressBar from './utils/ProgressBar.jsx';
+import Navbar from './components/Navbar.jsx';
 
 
 function App() {
   return (
     <Provider store={store}> {/* Wrap the whole app with the Provider */}
     <UserPolling/>
-      <div>
+     
       <ToastContainer
         position="top-right" // You can choose top-left, bottom-right, etc.
         autoClose={5000} // Auto-close after 5 seconds
@@ -25,8 +26,9 @@ function App() {
         draggable
         pauseOnHover
       />
-        <Dashboard /> {/* Render Dashboard */}
-      </div>
+      {/* <Navbar/> */}
+        <Dashboard /> 
+    
     </Provider>
   );
 }

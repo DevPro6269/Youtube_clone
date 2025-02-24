@@ -14,9 +14,9 @@ const Layout = () => {
   return (
     <>
     <Navbar searchQuery={searchQuery} onSearchChange={handleSearchChange} />
-    <div className='flex'>
-   <Sidebar/>
-   <Outlet context={{ searchQuery }} /> {/* Pass searchQuery to child components */}
+    <div className='flex justify-end  max-h-screen overflow-hidden' >
+     <Sidebar/>
+     <Outlet context={{ searchQuery }} /> {/* Pass searchQuery to child components */}
     </div>
     </>
   )
