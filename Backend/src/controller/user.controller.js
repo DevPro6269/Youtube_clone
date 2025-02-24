@@ -95,7 +95,7 @@ export async function verifyOtp(req, res) {
     res.cookie("accessToken", token, {
       httpOnly: true,
       maxAge: 3600000, // Token expiration time in ms (1 hour)
-      secure: process.env.NODE_ENV === "production", // Use secure cookie in production
+      secure: process.env.NODE_ENV === 'production', // Ensure secure cookies in production
       sameSite: "Strict", // Prevent CSRF attacks
     });
 
@@ -134,7 +134,7 @@ export async function login(req, res) {
   // Send the token in an HTTP-only cookie
   res.cookie("accessToken", token, {
     httpOnly: true,
-    secure: false,
+    secure: process.env.NODE_ENV === 'production', // Ensure secure cookies in production
     maxAge: 3600000, // Token expiration time in ms (1 hour)
     sameSite: "Strict", // Prevent CSRF attacks
   });
