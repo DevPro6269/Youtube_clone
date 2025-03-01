@@ -101,21 +101,49 @@ export async function viewVideo(req, res) {
     },
     {
       $lookup: {
-        from: "channels",
-        localField: "publishedBy",
-        foreignField: "_id",
-        as: "Channel",
+        from: "channels",       // Lookup the 'channels' collection
+        localField: "publishedBy",  // The field in Video that holds the reference
+        foreignField: "_id",     // The field in the Channel document that the reference corresponds to
+        as: "Channel",           // Alias for the result
       },
     },
     {
       $lookup: {
-        from: "comments",
-        localField: "comments",
-        foreignField: "_id",
-        as: "comments",
+        from: "comments",       // Lookup the 'comments' collection
+        localField: "comments", // The field in Video that holds references to Comments
+        foreignField: "_id",    // The field in the Comment document that the reference corresponds to
+        as: "comments",         // Alias for the result
+      },
+    },
+    {
+      $unwind: {               // Unwind the comments array to work on each comment individually
+        path: "$comments",
+        preserveNullAndEmptyArrays: true, // In case there are no comments
+      },
+    },
+    {
+      $lookup: {
+        from: "users",          // Lookup the 'users' collection for the owner of each comment
+        localField: "comments.user", // The field in Comment that holds the reference to the user
+        foreignField: "_id",    // The field in the User document that corresponds to the reference
+        as: "comments.user",   // Alias for the owner field inside each comment
+      },
+    },
+    {
+      $group: {                // Regroup the documents back into an array of comments
+        _id: "$_id",
+        videoUrl:{$first:"$videoUrl"},
+        title: { $first: "$title" },
+        description: { $first: "$description" },
+        Channel: { $first: "$Channel" },
+        comments: { $push: "$comments" },
       },
     },
   ]);
+  
+  
+
+ 
 
   // Check if video exists
   if (!video || video.length === 0)
@@ -224,7 +252,7 @@ export async function deleteVideo(req, res) {
 // Update a video's details (title/description)
 export async function updateVideo(req, res) {
   const { user } = req;
-  
+   
   // Check if user is logged in
   if (!user)
     return res
@@ -233,36 +261,49 @@ export async function updateVideo(req, res) {
   
   const { videoId } = req.params;
   
+   
   // Check if videoId is provided
   if (!videoId)
     return res.status(400).json(new ApiError(400, "please provide a video id"));
 
-  const { title, description } = req.body; 
-
+  const { title, description ,category} = req.body; 
+  
   // Check if any field (title or description) is provided for update
-  if (!title && !description)
+  if (!title && !description && !category ) 
     return res.status(400).json(new ApiError(400, "please provide a field to edit"));
   
   // Find the video by ID
   const video = await Video.findById(videoId);
-  
+
+  const objectToUpdate = {}
+if(title){
+  objectToUpdate.title=title
+}
+if(description){
+  objectToUpdate.description=description
+}
+if(category){
+  objectToUpdate.category=category
+}
+
   // Check if video exists
   if (!video)
     return res
       .status(404)
       .json(new ApiError(404, "video not found with provided id "));
-  
+   
+   
   // Check if user is authorized to update the video
-  if (video.owner.toString() !== user._id.toString())
+  if (video.publishedBy.toString() !== user.channel.toString())
     return res
       .status(404)
       .json(new ApiError(403, "you are not authorized to this route"));
 
+
   // Update the video with the provided fields
-  const updatedVideo = await Video.findByIdAndUpdate(videoId, {
-    title,
-    description
-  }, { new: true });
+ 
+    const updatedVideo = await Video.findByIdAndUpdate(videoId,objectToUpdate,{new:true});
+  
 
   // Check if update failed
   if (!updatedVideo)

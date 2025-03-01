@@ -127,27 +127,7 @@ export async function getChannelDetails(req, res) {
       .json(new ApiError(400, "channel id is missing in parameter"));
 
   // Fetch the channel details along with its videos
-  const channel = await Channel.aggregate([
-    {
-      $match: {
-        _id: new mongoose.Types.ObjectId(channelId),
-      },
-    },
-
-    {
-      $lookup: {
-        from: "videos", // Join with the "videos" collection
-        localField: "videos", // Channel's videos field
-        foreignField: "_id", // Video's _id field
-        as: "ChannelVideos", // Alias for the video data
-      },
-    },
-    {
-      $project: {
-        videos: 0, // Exclude the original 'videos' field from the response
-      },
-    },
-  ]);
+  const channel = await Channel.findById(channelId).populate("videos")
 
   // Check if the channel exists
   if (channel && channel.length < 0)

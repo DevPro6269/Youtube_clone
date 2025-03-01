@@ -25,6 +25,7 @@ router
     ]),
     WrapAsync(publishVideo)
   )
+  router.route("/:videoId")
   .put(isAuthenticate, WrapAsync(updateVideo))
 
 

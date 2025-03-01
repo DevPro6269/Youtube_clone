@@ -69,12 +69,12 @@ export async function verifyOtp(req, res) {
 
   // Check if OTP has expired
   if (otpExpiration < Date.now()) {
-    return res.status(400).json(new ApiError(400, "OTP has expired"));
+    return res.status(400).json(new ApiError(400, "OTP has expired! Cancel and Try Again"));
   }
 
   // Check if OTP matches
   if (storedOtp != otp) {
-    return res.status(400).json(new ApiError(400, "Invalid OTP"));
+    return res.status(400).json(new ApiError(400, "Invalid OTP! Please try Again"));
   }
 
   try {
@@ -120,7 +120,7 @@ export async function login(req, res) {
     return res.status(400).json(new ApiError(400, "email and password field is required"));
 
   // Check if user exists in the database
-  const user = await User.findOne({ email });
+  const user = await User.findOne({ email }).populate("channel");
   if (!user)
     return res.status(404).json(new ApiError(404, "user is not registered with this email id"));
 

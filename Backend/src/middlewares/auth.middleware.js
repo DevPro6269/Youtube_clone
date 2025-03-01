@@ -5,7 +5,6 @@ import ApiError from '../utils/apiError.js'; // Adjust the import for ApiError
 function isAuthenticate(req, res, next) {
   // Get the token from cookies or Authorization header
   const token = req.cookies.accessToken || (req.headers.authorization && req.headers.authorization.split(" ")[1]);
-   console.log(req);
    
   if (!token) {
     return res.status(400).json(new ApiError(400, "Invalid token or expired token"));
