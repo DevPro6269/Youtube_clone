@@ -14,7 +14,7 @@ const UserPolling = () => {
     if (isLoggedIn) {
       pollingInterval = setInterval(async () => {
         try {
-          const response = await axios.get("http://localhost:8000/api/user", {
+          const response = await axios.get("https://youtube-clone-4vf7.onrender.com/api/user", {
             withCredentials: true,
           });
           if (response && response.data && response.data.data) {
