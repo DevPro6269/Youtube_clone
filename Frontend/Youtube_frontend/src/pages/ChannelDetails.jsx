@@ -9,32 +9,28 @@ const ChannelDetails = () => {
   const[videos,setVideos] = useState([])
   const [channel,setChannel]= useState(null)
   const {channelId}= useParams()
-   const url = `https://youtube-clone-4vf7.onrender.com/api/channel/${channelId}`
-    const user = useSelector((state)=>state.user.user);
-     const[isOwner,setIsOwner]  = useState(false)
+  const url = `https://youtube-clone-4vf7.onrender.com/api/channel/${channelId}`
+  const user = useSelector((state)=>state.user.user);
+  const[isOwner,setIsOwner]  = useState(false)
 
 
     useEffect(()=>{
      if( user && channel){  
-       const  owner =  channel._id === user.channel
-       console.log(owner);
+      const owner = channel.owner.toString()===user._id.toString()
           setIsOwner(owner)
      }
     },[channel])
       
   useEffect(()=>{
    async function fetchData(){
-    console.log(url);
-    
     const response =   await axios.get(url,{withCredentials:true})
-
-      if(response && response.data){
-        setChannel(response.data.data[0])
-        setVideos(response.data.data[0].ChannelVideos )
+      if(response && response.data){ 
+        setChannel(response.data.data)
+        setVideos(response.data.data.videos )
       }
     }
     fetchData()
-  },[])
+  },[url])
 
 
   async function handleDeleteVideo(e,video){
@@ -54,13 +50,12 @@ const ChannelDetails = () => {
     console.log(error);
     
    }
-  
   }
 
 
   return (
    <>
-   <div className='md:w-[82%] w-screen justify-items-center px-6 p-2 flex gap-4 flex-col text-white bg-black h-auto'>
+   <div className='md:w-[82%] w-screen pb-5 justify-items-center px-6 p-2 flex gap-4 flex-col text-white bg-black  h-screen overflow-auto'>
      
     <section className=' w-[95%] mt-5  h-[22%] flex '>
            <div className='w-full h-full rounded-2xl  bg-zinc-600'>
@@ -104,10 +99,10 @@ const ChannelDetails = () => {
                 <button className='bg-zinc-700 rounded-md px-4 p-[5px]'>Oldest</button>
             </div>
 
-     <div className='flex gap-5  flex-wrap p-2'>
+     <div className='flex gap-5 overflow-auto  flex-wrap p-2'>
      { 
     videos &&  videos.map((video,index)=>{
-        return <VideoCard fn={(e)=>handleDeleteVideo(e,video)} key={index} video={video} />
+        return <VideoCard owner={isOwner} fn={(e)=>handleDeleteVideo(e,video)} key={index} video={video} />
       })
      }
      </div>

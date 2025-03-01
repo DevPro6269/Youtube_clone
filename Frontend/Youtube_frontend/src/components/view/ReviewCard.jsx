@@ -2,6 +2,7 @@ import axios from 'axios'
 import React, { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { toast } from 'react-toastify'
+import CalculateTime from "../../Helper/CalculateTime.js"
 const ReviewCard = ({comment,fn}) => {
 
 const[showMenu,setShowMenu]=useState(false)
@@ -29,6 +30,7 @@ function handleEditClick(){
   setMessage(comment.message)
 }
 
+
  async function handleCommentClick(e){
   e.preventDefault()
  try {
@@ -52,11 +54,11 @@ function handleEditClick(){
   return (
     <div className='flex relative items-center p-2 gap-2'>
     <div className=' md:w-[6%] rounded-full'>
-    <img src="https://plus.unsplash.com/premium_photo-1664474619075-644dd191935f?fm=jpg&q=60&w=3000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8aW1hZ2V8ZW58MHx8MHx8fDA%3D" className='md:w-12 w-8 h-8 md:h-12  object-cover rounded-full ' alt="" />
+    <img src={comment.user[0]?.profile} className='md:w-12 w-8 h-8 md:h-12  object-cover rounded-full ' alt="" />
     </div>
 
     <div className='w-[75%]'>
-      <p>@Xavier . <span className='text-gray-400'>2 years ago</span></p>
+      <p>@{comment.user[0]?.firstName} . <span className='text-gray-400'>{CalculateTime(comment.createdAt)}</span></p>
       {/* <p>{comment.message}</p> */}
       {
         isEditable?  <div className={`flex  items-center gap-3`}>

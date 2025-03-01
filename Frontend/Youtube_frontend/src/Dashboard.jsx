@@ -12,6 +12,8 @@ import ProtectedRoute from "./utils/protectedRoute.jsx"
 import OtpVerification from './components/VerifyOtp.jsx'
 import UploadVideo from './pages/UploadVideo.jsx'
 import ProtectedChannel from './utils/ProtectedChannel.jsx'
+import VideoEdit from './pages/VideoEdit.jsx'
+import ErrorPage from './pages/Error.jsx'
 
 const Dashboard = () => {
 
@@ -34,7 +36,10 @@ const userLoggedIn = useSelector((state)=>state.user.isLoggedIn)
       }
       ,{
         path:"/channel/:channelId",
-        element:<ChannelDetails/>
+        element:
+        <ProtectedRoute>
+          <ChannelDetails/>
+        </ProtectedRoute>
       }
       ,{
         path:"/verify",
@@ -53,6 +58,12 @@ const userLoggedIn = useSelector((state)=>state.user.isLoggedIn)
         element:<ProtectedRoute>
           <CreateChannel/>
         </ProtectedRoute>
+      },
+      {
+        path:"/video/edit/:videoId",
+        element:<ProtectedRoute>
+          <VideoEdit/>
+        </ProtectedRoute>
       }
     ]
   },
@@ -60,6 +71,10 @@ const userLoggedIn = useSelector((state)=>state.user.isLoggedIn)
     path:"/youtube/video/:videoId",
     element:<View/>
   },
+  {
+    path:"*",
+    element:<ErrorPage/>
+  }
  
   ,
   ])

@@ -45,7 +45,7 @@ if(response && response.data){
 
 <div className='flex flex-col '>
     <h1>{user && user.firstName +" "+ user.lastName }</h1>
-    <h2>@{ user && user.channel && user.channel.channelName}</h2>
+    <h2>@{user && user.channel && user.channel.channelName}</h2>
  {
     user?.channel?  <Link to={`/channel/${channelId}`} > <p className='text-sm text-blue-500 mt-2'>view your channel</p></Link>:
     <Link to={"/youtube/channel/new"} > <p className='text-blue-500 text-sm mt-2'>Create your channel</p></Link>

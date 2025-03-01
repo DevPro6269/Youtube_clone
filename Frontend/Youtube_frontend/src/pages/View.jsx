@@ -40,11 +40,15 @@ useEffect(()=>{
    }
 },[url])
 
+useEffect(()=>{
+  console.log(video);
+  
+},[video])
+
 function handleClick(){
    setIsSideBarOpen((prev)=>!prev)
    dispatch(setHamburgerMenu())
 }
-
 
 // useEffect(()=>{
 //   if(isSideBarOpen){

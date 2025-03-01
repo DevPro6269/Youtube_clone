@@ -8,7 +8,7 @@ const Home = ({searchQuery}) => {
    <> 
    {/* <div className=' border-4 border-red-400 bg-blue-500 flex flex-col'> */}
     {/* <CategoryBar/> */}
-   <VideoGrid searchQuery={searchQuery} />
+   <VideoGrid searchQuery={searchQuery} /> 
    {/* </div> */}
    </>
   )

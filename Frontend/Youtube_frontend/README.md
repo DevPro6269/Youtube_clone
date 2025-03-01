@@ -1,8 +1,69 @@
-# React + Vite
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+# YouTube Clone - Frontend
 
-Currently, two official plugins are available:
+A frontend clone of the popular video-sharing platform, YouTube. This project allows users to browse videos, search for content, view video details, and interact with the application as they would on the actual YouTube platform.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+
+
+## Features
+
+- Home page with video grid: 
+
+- channel page:
+
+- video view page 
+
+- channel dashboard: 
+
+- video upload page : :
+
+
+## Tech Stack
+
+- **React js for componets reusablity.**
+
+- **Axios for api calling**
+
+- **Recat router for routing**
+
+- **Redux for globally state management**
+
+- **Tailwind for writing css**
+
+
+
+
+
+## Run Locally
+
+Clone the project
+
+```bash
+  git clone https://github.com/DevPro6269/Youtube_clone
+```
+
+Go to the project directory
+
+```bash
+  cd Frontend/Youtube_frontend
+```
+
+Install dependencies
+
+```bash
+  npm install
+```
+
+Start the server
+
+```bash
+  npm run start
+```
+
+
+## 🔗 Links
+[![GitHub](https://img.shields.io/badge/GitHub-000?style=for-the-badge&logo=github&logoColor=white)](https://github.com/DevPro6269/Youtube_clone)  
+[![YouTube](https://img.shields.io/badge/YouTube-FF0000?style=for-the-badge&logo=youtube&logoColor=white)](https://youtu.be/V1JwQCb0lxc)
+
+
+

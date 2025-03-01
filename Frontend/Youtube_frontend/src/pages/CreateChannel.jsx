@@ -1,27 +1,41 @@
 import React, { useEffect, useState } from "react";
-import { useSubmit } from "react-router-dom";
 import { Link } from "react-router-dom";
 import useApiRequest from "../Hooks/useApiRequest";
-import axios from "axios";
+import { useNavigate } from "react-router-dom";
+import {toast} from "react-toastify"
+
 export const CreateChannel = () => {
   const [triggerRequest, setTriggerRequest] = useState(false);
   const url = `https://youtube-clone-4vf7.onrender.com/api/channel`
-  
-
+  const[errors,setErrors] = useState({})
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     channelName: "",
     description: "",
     profile: null, // This will hold the image file
   });
 
-  
+
   const {data,loading,error}=useApiRequest(url,triggerRequest,"POST",formData)
   
   useEffect(()=>{
-    console.log(data.data)
-    console.log(error)
-  },[error])
-
+    // console.log( data && data.data)
+    // console.log( error && error.message);
+    
+    if(error){
+    setTriggerRequest(false)
+    }
+    if(data && data.statusCode==201 ){
+      navigate("/")
+      toast.success("channel created successfully")
+    }
+     
+    setFormData({
+      channelName: "",
+      description: "",
+      profile: "", 
+    })
+  },[data,error])
 
   // Handle form input changes
   async function handleChange(e) {
@@ -39,24 +53,28 @@ export const CreateChannel = () => {
         [name]: value, // Update the value for text inputs
       }));
     }
+
   }
 
   // Handle form submission (Create Channel)
  async function handleClick() {
     // Here you can process the form data (e.g., send it to an API)
-    
+    setErrors({})
+     const error = {}
   if(!formData.channelName){
-    alert("please enter a name ")
-    return
+    error.channelName = "please provide a channel name"
   }
   if(!formData.description){
-    alert("please enter a description")
-    return
+    error.description = "please provide a description"
   }
 
   if(!formData.profile){
-    alert("please choose a profile for a channel")
-    return
+    error.profile= "please choose a profile for a channel"
+  }
+
+  if(Object.keys(error).length>0){
+    setErrors(error)
+    return;
   }
 
   const formToSubmit = new FormData();
@@ -66,121 +84,11 @@ export const CreateChannel = () => {
   
   setFormData(formToSubmit);
   setTriggerRequest(true)
-  // try {
-  //   const response = await axios.post(url,formToSubmit,{withCredentials:true,
-  //       headers:{
-  //           'Content-Type': 'multipart/form-data',
-  //       }
-  //   })
-  // console.log(response);
-  
-  // } catch (error) {
-  //   console.log(error);
-  // }
-  
-
   }
 
   return (
-    // <div className="h-screen w-full md:w-[82%] bg-zinc-700 top-0 z-10 flex justify-center items-center">
-    //   <div className="bg-white h-[80%] w-[80%] flex flex-col justify-between p-4 rounded-2xl">
-    //     <div className="p-3">
-    //       <h1 className="text-3xl">How you'll appear</h1>
-    //     </div>
-
-    //     <form className=" -mt-10 self-center">
-    //       <div className="flex flex-col gap-6">
-    //         <div className="flex items-center flex-col gap-4">
-    //           {/* Label and Image Preview */}
-    //           <label htmlFor="image" className="cursor-pointer">
-    //             <div
-    //               className={`h-24 w-24 rounded-full flex justify-center items-center ${
-    //                 formData.profile ? "bg-transparent" : "bg-blue-300"
-    //               }`}
-    //             >
-    //               {/* Display the selected image if available */}
-    //               {formData.profile ? (
-    //                 <img
-    //                   src={URL.createObjectURL(formData.profile)}
-    //                   alt="Profile"
-    //                   className="h-full w-full object-cover rounded-full"
-    //                 />
-    //               ) : (
-    //                 <i className="fa-solid text-6xl fa-user text-blue-600"></i> // Default icon
-    //               )}
-    //             </div>
-    //           </label>
-
-    //           {/* File Input */}
-             
-    //           <input
-    //             type="file"
-    //             accept="image/*"
-    //             id="image"
-    //             className="hidden"
-    //             onChange={handleChange}
-    //           />
-
-    //           {/* Instructions */}
-    //           <p className="text-blue-500">Select Picture</p>
-    //         </div>
-
-    //         {/* Channel Name and Description Inputs */}
-    //         <div className="flex items-center flex-col gap-2">
-           
-    //           <div className="border w-[40%] rounded-md bg-slate-100 px-1">
-    //             <label className="text-sm" htmlFor="channelName">
-    //               Name
-    //             </label>{" "}
-    //             <br />
-                
-    //             <input
-    //               type="text"
-    //               name="channelName"
-    //               onChange={handleChange}
-    //               value={formData.name}
-    //               className="outline-none w-full p-1"
-    //             />
-    //           </div>
-    //           <div className="border w-[40%] rounded-md px-1 bg-slate-100">
-    //             <label className="text-sm" htmlFor="channelDescription">
-    //               Description
-    //             </label>{" "}
-    //             <br />
-    //             <input
-    //               type="text"
-    //               name="description"
-    //               onChange={handleChange}
-    //               value={formData.description}
-    //               className="outline-none p-1 w-full"
-    //             />
-    //           </div>
-    //         </div>
-
-    //         <div className="flex justify-center">
-    //           <p className="w-[70%]">
-    //             By clicking create channel you agree to YouTube's Terms of
-    //             Service. Changes to your name and profile picture are visible
-    //             only on YouTube and not other Google services. Learn More
-    //           </p>
-    //         </div>
-    //       </div>
-    //     </form>
-
-    //     {/* Buttons */}
-    //     <div className="flex gap-5 justify-end items-end p-2">
-    //       <Link to="/"><button className="outline rounded-xl p-2 px-4">Cancel</button></Link>
-    //       <button
-    //         onClick={handleClick}
-    //         className="text-white px-4 p-2 rounded-xl bg-blue-500 hover:bg-blue-400"
-    //       >
-    //         Create channel
-    //       </button>
-    //     </div>
-    //   </div>
-    // </div>
-
-    <div className="h-screen w-full lg:w-[82%] bg-zinc-700 top-0 z-10 flex justify-center items-center">
+   
+    <div className="h-screen w-full lg:w-[82%] pb-5 bg-zinc-700 top-0 z-10 flex justify-center items-center">
   <div className="bg-white h-auto md:h-[80%] w-[90%] md:w-[80%] flex flex-col justify-between p-4 rounded-2xl">
     <div className="p-3">
       <h1 className="text-3xl text-center">How you'll appear</h1>
@@ -221,6 +129,7 @@ export const CreateChannel = () => {
           {/* Instructions */}
           <p className="text-blue-500">Select Picture</p>
         </div>
+        {errors.profile && <p className="text-red-500 text-center text-sm ">{errors.profile}</p>}
 
         {/* Channel Name and Description Inputs */}
         <div className="flex flex-col md:items-center justify-between gap-4">
@@ -232,10 +141,11 @@ export const CreateChannel = () => {
               type="text"
               name="channelName"
               onChange={handleChange}
-              value={formData.name}
+              value={formData.channelName}
               className="outline-none w-full p-1"
             />
           </div>
+          {errors.channelName && <p className="text-red-500 text-center text-sm ">{errors.channelName}</p>}
 
           <div className="border w-full md:w-[40%] rounded-md bg-slate-100 px-1">
             <label className="text-sm" htmlFor="channelDescription">
@@ -249,6 +159,10 @@ export const CreateChannel = () => {
               className="outline-none w-full p-1"
             />
           </div>
+        
+        {errors.description && <p className="text-red-500  text-sm ">{errors.description}</p>}
+        {error && <p className="text-red-500  text-sm ">{error.message}</p>}
+  
         </div>
 
         <div className="flex justify-center">
@@ -269,10 +183,11 @@ export const CreateChannel = () => {
         </button>
       </Link>
       <button
+      disabled={loading}
         onClick={handleClick}
-        className="text-white px-4 p-2 rounded-xl bg-blue-500 hover:bg-blue-400 w-full md:w-auto"
+        className={`text-white px-4 p-2 ${loading?"bg-gray-500":"bg-blue-500"} rounded-xl  hover:bg-blue-400 w-full md:w-auto`}
       >
-        Create channel
+        {loading?"Creating...":"Create Channel"}
       </button>
     </div>
   </div>

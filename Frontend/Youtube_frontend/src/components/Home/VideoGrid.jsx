@@ -9,7 +9,7 @@ export const VideoGrid = () => {
   const[showMenu,setShowMenu]=useState(false);
   const [videos, setVideos] = useState([]);
   const [isLoading, setLoading] = useState(false);
-  const { searchQuery } = useOutletContext(); // Get search query from Layout
+  let { searchQuery } = useOutletContext(); // Get search query from Layout
   const [activeCategory, setActiveCategory] = useState("All");
   const[sortBy,setSortBy] = useState("")
   const url = `https://youtube-clone-4vf7.onrender.com/api/video`;
@@ -33,11 +33,12 @@ export const VideoGrid = () => {
         }
       } catch (error) {
         console.error(error);
+        setVideos([])
       } finally {
         setLoading(false);
       }
     };
-
+   searchQuery=""
     fetchVideos();
   }, [activeCategory,searchQuery]); // Empty dependency array to run the fetch only once
 

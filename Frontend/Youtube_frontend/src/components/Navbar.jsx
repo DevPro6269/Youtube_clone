@@ -15,6 +15,8 @@ const Navbar = ({handleClick=null,searchQuery,onSearchChange}) => {
      dispatch(setHamburgerMenu())
   }
 
+  
+
 
   return (
     <>

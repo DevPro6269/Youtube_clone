@@ -5,12 +5,12 @@ import { Outlet } from 'react-router-dom'
 const Layout = () => {
 
   const [searchQuery, setSearchQuery] = useState('');
-
+   
   // Function to update search query
   const handleSearchChange = (query) => {
     setSearchQuery(query);
   };
-
+           
   return (
     <>
     <Navbar searchQuery={searchQuery} onSearchChange={handleSearchChange} />

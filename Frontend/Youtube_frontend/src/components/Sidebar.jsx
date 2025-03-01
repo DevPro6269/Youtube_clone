@@ -17,7 +17,7 @@ dispatch(setHamburgerMenu())
 }
  
   return (
-    <div onClick={handleClick} className={`bg-black max-h-screen  mt-8 overflow-scroll  left-0 top-6 pb-16   container ${isOpen?"block":"hidden"} fixed   z-40 w-fit   lg:block  text-white  px-4 p-2`}>
+    <div onClick={handleClick} className={`bg-black max-h-screen  mt-8 overflow-scroll  left-0 top-6 pb-20   container ${isOpen?"block":"hidden"} fixed   z-40 w-fit   lg:block  text-white  px-4 p-2`}>
       <div className="w-fit hidden">
         <i className="fa-solid fa-bars fa-xl" style={{ color: "#ffffff" }}></i>
         &nbsp; &nbsp; &nbsp;
@@ -33,8 +33,6 @@ dispatch(setHamburgerMenu())
       {/* ///////////////////    options ///// */}
       <div className="flex mt-2  flex-col">
         <Link to={"/"}>
-
-
         <div className="bg-zinc-800 md:w-48 w-40 rounded-2xl px-4 p-2">
     <div className="flex gap-6 items-center font-light">
     <i className="fa-solid fa-house" style={{ color: "#ffffff" }}></i>

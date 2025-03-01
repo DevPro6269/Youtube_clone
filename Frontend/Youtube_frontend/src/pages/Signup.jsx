@@ -8,8 +8,11 @@ const Signup = () => {
   const [isVisible, setIsVisible] = useState(false);  
   const [triggerRequest, setTriggerRequest] = useState(false);
   const url = "https://youtube-clone-4vf7.onrender.com/api/user/signup";
-  
+  const[errors,setErros] =useState({})
+  const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+
   // State to hold form data
+
   const [formData, setFormData] = useState({
     firstName: "",
     lastName: "",
@@ -27,6 +30,7 @@ const Signup = () => {
       ...prev,
       [name]: value,
     }));
+    setTriggerRequest(false)
   };
 
   // UseEffect to log response data and errors
@@ -42,93 +46,53 @@ const Signup = () => {
       setIsVisible(true); // Show OTP verification form after successful signup
     }
 
-    setTriggerRequest(false); // Reset the trigger once the request completes
+    setTriggerRequest(false); // Reset the trigger once the request completes 
   }, [data, error]);
 
   // Handle form submission
   const handleSubmit = (e) => {
     e.preventDefault();
-
-    // Form validation
-    if (!formData.firstName || !formData.lastName || !formData.email || !formData.password) {
-      return alert("All fields must be filled out!");
+     setErros({})
+    const error = {}; // Object to store error messages
+  
+    // Check if first name is empty
+    if (!formData.firstName) {
+      error.FirstName = "First name cannot be empty";
     }
-
-    // Trigger the request
+  
+    // Check if last name is empty
+    if (!formData.lastName) {
+      error.lastName = "Last name cannot be empty";
+    }
+  
+    // Check if email is empty or invalid
+    if (!formData.email) {
+      error.email = "Email cannot be empty";
+    } else if (!emailRegex.test(formData.email)) { // Email regex validation
+      error.email = "Invalid email format";
+    }
+  
+    // Check if password is empty or doesn't meet criteria
+    if (!formData.password) {
+      error.password = "Password cannot be empty";
+    } else if (formData.password.length < 6) { // Password length validation (minimum 6 characters)
+      error.password = "Password must be at least 6 characters long";
+    }
+  
+    // If any errors exist, show them and stop form submission
+    if (Object.keys(error).length > 0) {
+      // Optionally, display all errors in the UI (for now, alert them)
+      setErros(error)
+      return ; // You can customize this to display the error on the UI
+    }
+  
+    // If no errors, trigger the request
     setTriggerRequest(true);
   };
+  
 
   return (
     <>
-      {/* <section className='w-[82%] flex justify-center pb-20 items-center h-screen'>
-        <div className='flex bg-white'>
-          <div className='w-[50%]'>
-            <img src="https://res.cloudinary.com/dqlryem36/image/upload/v1739619803/development_nfbbl3.png" alt="Signup illustration" />
-          </div>
-
-          <form onSubmit={handleSubmit} className='bg-white p-4 w-[50%] flex items-center flex-col gap-8'>
-            <div className='self-center'>
-              <h1 className='text-3xl'>Sign Up</h1>
-            </div>
-
-            <div>
-              <input
-                type="text"
-                name="firstName"
-                onChange={handleChange}
-                placeholder='First Name'
-                className='border-b w-66 outline-none'
-              />
-            </div>
-
-            <div>
-              <input
-                type="text"
-                name="lastName"
-                onChange={handleChange}
-                placeholder='Last Name'
-                className='border-b w-66 outline-none'
-              />
-            </div>
-
-            <div>
-              <input
-                type="email"
-                name="email"
-                onChange={handleChange}
-                placeholder='Email'
-                className='border-b w-66 outline-none'
-              />
-            </div>
-
-            <div>
-              <input
-                type="password"
-                name="password"
-                onChange={handleChange}
-                placeholder='Password'
-                className='border-b w-66 outline-none'
-              />
-            </div>
-
-            <div className='w-full justify-center flex'>
-              <button
-                type="submit"
-                className='p-2 font-semibold w-[70%] border bg-blue-500 hover:bg-blue-400 text-white rounded-md'
-                disabled={loading} // Disable when loading
-              >
-                {loading ? "Signing up..." : "Sign up"}
-              </button>
-            </div>
-
-            {error && <p className='text-red-600'>{error.message || "An error occurred."}</p>}
-
-            <div>
-              <p>Already have an account? <Link className='text-blue-500' to="/login">Login</Link></p>
-            </div>
-          </form>
-        </div>
-      </section> */}
      <section className="w-full flex justify-center items-center h-screen px-4 lg:w-[81%]  bg-gray-900">
   <div className="flex w-full max-w-4xl p-6 mx-auto bg-white shadow-lg rounded-xl">
     
@@ -153,45 +117,52 @@ const Signup = () => {
       {/* First Name Input */}
       <div>
         <input 
+        value={formData.firstName}
           type="text"
           name="firstName"
           onChange={handleChange}
           placeholder="First Name"
           className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
         />
+      {errors.FirstName ? <p className='text-red-400'>{errors.FirstName}</p>:""}
       </div>
-
       {/* Last Name Input */}
       <div>
         <input 
+         value={formData.lastName}
           type="text"
           name="lastName"
           onChange={handleChange}
           placeholder="Last Name"
           className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
         />
+         {errors.lastName ? <p className='text-red-400'>{errors.lastName}</p>:""}
       </div>
 
       {/* Email Input */}
       <div>
         <input 
+         value={formData.email}
           type="email"
           name="email"
           onChange={handleChange}
           placeholder="Email"
           className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
         />
+           {errors.email ? <p className='text-red-400'>{errors.email}</p>:""}
       </div>
 
       {/* Password Input */}
       <div>
         <input 
+        value={formData.password}
           type="password"
           name="password"
           onChange={handleChange}
           placeholder="Password"
           className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
         />
+          {errors.password ? <p className='text-red-400'>{errors.password}</p>:""}
       </div>
 
       {/* Sign-up Button */}

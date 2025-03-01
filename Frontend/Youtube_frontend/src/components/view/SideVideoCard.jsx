@@ -1,6 +1,7 @@
 import React from 'react'
 
 const SideVideoCard = ({src,title,channelName,views}) => {
+  
   return (
     <div className='flex gap-2'>
     <div  className='bg-black p-1 w-[40%] '>

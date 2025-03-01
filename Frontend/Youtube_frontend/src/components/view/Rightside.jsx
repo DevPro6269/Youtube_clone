@@ -1,12 +1,13 @@
 import React,{useState,useEffect} from "react";
 import SideVideoCard from "./SideVideoCard";
 import axios from "axios";
+import CalculateTime from "../../Helper/CalculateTime.js"
 import { Link } from "react-router-dom";
 const Rightside = () => {
 
   const url = "https://youtube-clone-4vf7.onrender.com/api/video";
   const [videos, setVideos] = useState([]);
-
+  
   useEffect(() => {
     const fetchVideos = async () => {
       try {
@@ -14,6 +15,8 @@ const Rightside = () => {
 
         if (response && response.data) {
           // console.log(response.data);
+        
+          
           setVideos(response.data.data);
         }
       } catch (error) {
@@ -22,7 +25,7 @@ const Rightside = () => {
     };
 
     fetchVideos();
-  }, []);
+  }, [videos]);
 
 
   
@@ -40,8 +43,8 @@ videos && videos.map((video,index)=>{
   key={index}
   src={video.thumbnailUrl}
   title={video.title}
-  channelName={"Times music"}
-  views={"110M views : 1 year ago"}
+  channelName={video.publishedBy.channelName}
+  views={`${ video.views} views . ${CalculateTime(video.createdAt)}`}
 />
   </Link>
 })

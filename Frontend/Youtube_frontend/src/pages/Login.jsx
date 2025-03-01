@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import useApiRequest from "../Hooks/useApiRequest.js"
-import { useNavigate } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
 import { setLoggedIn } from '../Store/userSlice.js'
 import { toast } from 'react-toastify';
@@ -9,7 +9,7 @@ import { toast } from 'react-toastify';
 const Login = () => {
    const dispatch = useDispatch()
     const navigate = useNavigate()
-
+    const [errors,setErros]=useState({})
  const url = "https://youtube-clone-4vf7.onrender.com/api/user/login"
 
  const[formData,setFormData]=useState({
@@ -28,22 +28,31 @@ const {data,loading,error}=useApiRequest(url,triggerRequest,"POST",formData)
         navigate("/")
         toast.success(`Login successful! Welcome!`); // Success toast
     }
-    console.log(triggerRequest)
+   settriggerRequest(false)
  },[data,triggerRequest])
 
 function handleSubmit(e){
     e.preventDefault();
-    console.log(formData);
+     setErros({})
+    const error = {}
    
-    if (!formData.email || !formData.email.match(/^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/)) {
-        return alert("Please enter a valid email.");
+    if (!formData.email) {
+       error.email = "email can not be empty"
       }
-      if (!formData.password || formData.password.length < 6) {
-        return alert("Password must be at least 6 characters.");
+      else if(!formData.email.match(/^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/)){
+        error.email = "please enter a correct mail"
       }
-  
+      if (!formData.password) {
+        error.password = "password can not be empty"
+      }
+      else if (formData.password.length<6){
+        error.password = "password must have 6 character"
+      }
 
-
+    if(Object.keys(error).length>0){
+      setErros(error)
+      return;
+    }
     settriggerRequest(true)
     
 }
@@ -79,7 +88,7 @@ function handleChange(e){
         <h1 className="text-3xl font-semibold text-gray-800">Welcome Back!</h1>
         <p className="text-gray-500">Please login to continue.</p>
       </div>
-
+ 
       {/* Email Input */}
       <div>
         <input 
@@ -90,7 +99,9 @@ function handleChange(e){
           placeholder="Enter your email"
           className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
         />
-      </div>
+           {errors.email && <p className="text-red-600   mt-2">{errors.email}</p>}
+
+            </div>
 
       {/* Password Input */}
       <div>
@@ -102,11 +113,12 @@ function handleChange(e){
           placeholder="Enter your password"
           className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
         />
+         {errors.password && <p className="text-red-600  mt-2">{errors.password}</p>}
       </div>
 
       {/* Error Message */}
-      {error && <p className="text-red-600 text-sm mt-2">{error.message}</p>}
-
+      {error && <p className="text-red-600 text-sm text-center mt-2">{error.message}</p>}
+      
       {/* Login Button */}
       <div className="flex justify-center">
         <button
@@ -117,11 +129,12 @@ function handleChange(e){
           {loading ? 'Logging in...' : 'Log In'}
         </button>
       </div>
+     
 
       {/* Forgot Password & Sign Up Link */}
       <div className="flex justify-between text-sm text-gray-600">
         <a href="#" className="text-blue-300 hover:text-blue-600">Forgot password?</a>
-        <a href="#" className="text-blue-300 hover:text-blue-600">Sign up</a>
+        <Link to={"/sign-up"} className="text-blue-300 hover:text-blue-600">Sign up</Link>
       </div>
     </form>
   </div>
